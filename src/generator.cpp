@@ -1,66 +1,66 @@
 #include "generator.h"
 
-Generator::Generator(Collection * C,const bool& shuffle) 
-  : _coll(C)
-  , _stepID(0) 
-  , __permute(nullptr)
+Generator::Generator(Collection * C,const bool& shuffle)
+    : _coll(C)
+    , _stepID(0)
+    , __permute(nullptr)
 {
-  if (shuffle)
-  {
-    randomize();
-  }
+    if (shuffle)
+    {
+        randomize();
+    }
 }
 
 bool Generator::next(Step& S)
 {
-  if (_stepID < 40)
-  {
-    return _coll->getStep(_stepID++,S) ? true : next(S);
-  }
-  else
-  {
-    return false;
-  }
+    if (_stepID < 40)
+    {
+        return _coll->getStep(_stepID++,S) ? true : next(S);
+    }
+    else
+    {
+        return false;
+    }
 }
 bool Generator::nextRandom(Step& S)
 {
-  if (_stepID < 40)
-  {
-    return _coll->getStep(__permute[_stepID++],S) ? true : nextRandom(S);
-  }
-  else
-  {
-    return false;
-  }
+    if (_stepID < 40)
+    {
+        return _coll->getStep(__permute[_stepID++],S) ? true : nextRandom(S);
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void Generator::randomize()
 {
-  if (__permute == nullptr)
-  {
-    __permute = new uchr[40];
-    for (int id = 0; id < 40; ++id)
+    if (__permute == nullptr)
     {
-      __permute[id] = id;
-    };
-  }
-  srand(time(NULL));
-  for (int shuffles = 3; shuffles; )
-  {
-    const int i1 = rand() % 40;
-    const int i2 = rand() % 40;
-    if (i1 != i2)
-    {
-      std::swap( __permute[i1], __permute[i2]);
+        __permute = new uchr[40];
+        for (int id = 0; id < 40; ++id)
+        {
+            __permute[id] = id;
+        };
     }
-    else
+    srand(time(NULL));
+    for (int shuffles = 3; shuffles; )
     {
-      --shuffles;
+        const int i1 = rand() % 40;
+        const int i2 = rand() % 40;
+        if (i1 != i2)
+        {
+            std::swap( __permute[i1], __permute[i2]);
+        }
+        else
+        {
+            --shuffles;
+        }
     }
-  }
 }
 
 Generator::~Generator()
 {
-  delete __permute;
+    delete __permute;
 }

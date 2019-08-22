@@ -5,18 +5,18 @@
 
 enum Turn
 {
-  MINE,
-  YOURS
+    MINE,
+    YOURS
 };
 
 class Collection
 {
-  Stone ** __collection;
+    Stone ** __collection;
 
 public:
-  Collection(Turn, const Node *);
-  ~Collection();
+    Collection(Turn, const Node *);
+    ~Collection();
 
-  bool getStep(uchr, Step&);
+    bool getStep(uchr, Step&);
 };
 #endif

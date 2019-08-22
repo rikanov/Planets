@@ -17,48 +17,48 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
- 
+
 #include "sstack.h"
 
 StepStack::StepStack(const int& size)
-  :_stackSize(size)
-  ,__moveHistory(nullptr)
+    :_stackSize(size)
+    ,__moveHistory(nullptr)
 {
 }
 
 void StepStack::resetStack()
 {
-  // --- set step stacks for UI -- //
-  delete[] __moveHistory; // purify it
-  __moveHistory = new Step[_stackSize + 1];
-  _currentMove = _lastMove = __moveHistory + 1;
-  // -------------- //
+    // --- set step stacks for UI -- //
+    delete[] __moveHistory; // purify it
+    __moveHistory = new Step[_stackSize + 1];
+    _currentMove = _lastMove = __moveHistory + 1;
+    // -------------- //
 }
 
 void StepStack::storeStep(Step S)
 {
-  S.step();
-  *(++_currentMove) = S;
-  _lastMove = _currentMove;
+    S.step();
+    *(++_currentMove) = S;
+    _lastMove = _currentMove;
 }
 
 void StepStack::undoStep()
 {
-  if (isStarted())
-  {
-    (_currentMove--)->back();
-  }
+    if (isStarted())
+    {
+        (_currentMove--)->back();
+    }
 }
 
 void StepStack::redoStep()
 {
-  if ((_currentMove != _lastMove))
-  {
-    (++_currentMove)->step();
-  }
+    if ((_currentMove != _lastMove))
+    {
+        (++_currentMove)->step();
+    }
 }
 
 StepStack::~StepStack()
 {
-  delete[] __moveHistory;
+    delete[] __moveHistory;
 }

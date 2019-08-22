@@ -25,23 +25,23 @@
 
 class Board: public StepStack
 {
-  const Node* _WINNER_SPOT;
+    const Node* _WINNER_SPOT;
 protected:
 public:
-  // Board grid [rows+2][columns+2]
-  Node ** __theGrid;
-  Collection * _collectionOfPlayer;
-  Collection * _collectionOfProgram;
+    // Board grid [rows+2][columns+2]
+    Node ** __theGrid;
+    Collection * _collectionOfPlayer;
+    Collection * _collectionOfProgram;
 
-  const int _rows;
-  const int _cols;
+    const int _rows;
+    const int _cols;
 
-  int _lastDepth = 0;
+    int _lastDepth = 0;
 public:
-  Board(const int& size = 5);
-  virtual ~Board();
-  void reset();
-  void show() const;
+    Board(const int& size = 5);
+    virtual ~Board();
+    void reset();
+    void show() const;
 };
 
 #endif // BOARD_H
