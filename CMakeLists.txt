@@ -2,6 +2,16 @@ cmake_minimum_required(VERSION 3.0)
 
 project(planets)
 
-add_executable(planets main.cpp)
+include_directories(inc/)
+
+add_executable(planets main.cpp
+                                src/str_node.cpp
+                                src/stone.cpp
+                                src/sstack.cpp
+                                src/collection.cpp
+                                src/board.cpp 
+                                src/generator.cpp
+                                src/engine.cpp
+                                )
 
 install(TARGETS planets RUNTIME DESTINATION bin)
