@@ -5,17 +5,18 @@
 
 class Generator
 {
-    Collection * _coll;
+    const Collection * _coll;
     uchr * __permute;
     uchr _stepID;
 
 public:
-    Generator(Collection * C,const bool& shuffle = false);
+    Generator ( const Collection * C,const bool& shuffle = false );
     ~Generator();
-    bool next(Step &);
-    bool nextRandom(Step&);
+    bool next ( Step & );
+    bool nextRandom ( Step& );
     void randomize();
-    void reset() {
+    void reset()
+    {
         _stepID = 0;
     }
 };

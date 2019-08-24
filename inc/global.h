@@ -9,15 +9,22 @@
 //#include <Windows.h>
 
 #define log(X) std::cout<<(X)<<' '<<std::flush;
-#define log2(X,Y) std::cout<<(X)<<' '<<(Y)<<std::endl;
-#define log3(X,Y,Z) std::cout<<(X)<<' '<<(Y)<<' '<<(Z)<<std::endl;
+#define log2(X,Y) std::cout<<(X)<<' '<<(Y)<<' '<<std::flush;
+#define log3(X,Y,Z) std::cout<<(X)<<' '<<(Y)<<' '<<(Z)<<' '<<std::flush;
 
-static inline void CLR() {
+#define log_(X) std::cout<<(X)<<' '<<std::endl;
+#define log2_(X,Y) std::cout<<(X)<<' '<<(Y)<<std::endl;
+#define log3_(X,Y,Z) std::cout<<(X)<<' '<<(Y)<<' '<<(Z)<<std::endl;
+
+static inline void CLR()
+{
     std::cout << "\033[2J\033[1;1H" << std::endl;
 }
-static inline void Sleep(int m) {
-    sleep(m );
+static inline void Sleep ( int m )
+{
+    sleep ( m );
 }
+//*/
 //static inline void CLR() { system("CLS"); };
 typedef unsigned char uchr;
 

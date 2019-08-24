@@ -7,11 +7,13 @@ include_directories(inc/)
 add_executable(planets main.cpp
                                 src/str_node.cpp
                                 src/stone.cpp
+                                src/step.cpp 
                                 src/sstack.cpp
                                 src/collection.cpp
                                 src/board.cpp 
                                 src/generator.cpp
                                 src/engine.cpp
+                                src/basicui.cpp
                                 )
 
 install(TARGETS planets RUNTIME DESTINATION bin)

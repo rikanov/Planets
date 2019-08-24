@@ -3,8 +3,7 @@
 
 #include "stone.h"
 
-enum Turn
-{
+enum Turn {
     MINE,
     YOURS
 };
@@ -14,9 +13,9 @@ class Collection
     Stone ** __collection;
 
 public:
-    Collection(Turn, const Node *);
+    Collection ( Turn, const Node * );
     ~Collection();
 
-    bool getStep(uchr, Step&);
+    bool getStep ( uchr, Step& ) const;
 };
 #endif

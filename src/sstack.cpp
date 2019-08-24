@@ -20,9 +20,9 @@
 
 #include "sstack.h"
 
-StepStack::StepStack(const int& size)
-    :_stackSize(size)
-    ,__moveHistory(nullptr)
+StepStack::StepStack ( const int& size )
+    :_stackSize ( size )
+    ,__moveHistory ( nullptr )
 {
 }
 
@@ -35,28 +35,32 @@ void StepStack::resetStack()
     // -------------- //
 }
 
-void StepStack::storeStep(Step S)
+void StepStack::storeStep ( Step S )
 {
     S.step();
-    *(++_currentMove) = S;
+    * ( ++_currentMove ) = S;
     _lastMove = _currentMove;
 }
 
 void StepStack::undoStep()
 {
-    if (isStarted())
-    {
-        (_currentMove--)->back();
+    if ( isStarted() ) {
+        ( _currentMove-- )->back();
     }
 }
 
 void StepStack::redoStep()
 {
-    if ((_currentMove != _lastMove))
-    {
-        (++_currentMove)->step();
+    if ( ( _currentMove != _lastMove ) ) {
+        ( ++_currentMove )->step();
     }
 }
+
+bool StepStack::isLoop() const
+{
+    return isStarted() && _currentMove->inverseOf ( _currentMove - 2 );
+}
+
 
 StepStack::~StepStack()
 {
