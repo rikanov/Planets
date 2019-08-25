@@ -9,6 +9,7 @@ private:
     int _currentLevel;
     int _boundLevel;
 
+    Result seeker ( Step&, Result& );
     Result test0();
     Result test ( Result& search_bound );
 protected:

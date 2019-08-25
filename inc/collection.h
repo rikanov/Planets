@@ -18,5 +18,6 @@ public:
     ~Collection();
 
     bool getStep ( uchr, Step& ) const;
+    bool getStep ( uchr ID, uchr dir, Step& S ) const;
 };
 #endif

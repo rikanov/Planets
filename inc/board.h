@@ -44,6 +44,7 @@ public:
     void show() const;
     bool isPlayerTurn() const;
     bool getStep ( uchr, Step& );
+    bool getStep ( uchr, uchr, Step& );
     const Collection * getProgramCollection() const;
     const Collection * getPlayerCollection() const;
     const Collection * getCurrentCollection() const;

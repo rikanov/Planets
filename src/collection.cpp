@@ -17,9 +17,14 @@ Collection::Collection ( Turn T, const Node * S )
 
 bool Collection::getStep ( uchr ID, Step& S ) const
 {
+    return getStep ( ID / 8, ID % 8, S );
+}
+
+bool Collection::getStep ( uchr ID, uchr dir, Step& S ) const
+{
     bool ret = false;
-    const Stone* pStone = __collection[ID / 8];
-    const Node* pNode = pStone->go ( ID % 8 );
+    const Stone* pStone = __collection[ID ];
+    const Node* pNode = pStone->go ( dir );
     if ( pNode != nullptr )
     {
         S.set ( pStone,pNode );
@@ -27,6 +32,7 @@ bool Collection::getStep ( uchr ID, Step& S ) const
     }
     return ret;
 }
+
 Collection::~Collection()
 {
     for ( Stone ** pNext = __collection; *pNext; ++pNext )

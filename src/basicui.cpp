@@ -111,6 +111,8 @@ void BasicUI::start()
 
 void BasicUI::autoplay ( const int& L1, const int& L2 )
 {
+    CLR();
+    show();
     while ( !isFinished() )
     {
         setBoundLevel ( isPlayerTurn() ? L1 : L2 );

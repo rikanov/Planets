@@ -16,7 +16,22 @@ void Engine::makeStep ( uchr token )
 
 void Engine::makeStep ( uchr P, uchr D )
 {
-    makeStep ( D + ( P - 1 ) * 8 );
+    Step st;
+    getStep ( P, D, st );
+    storeStep ( st );
+}
+
+Result Engine::seeker ( Step& S, Result& search_bound )
+{
+    static int depth = 0;
+    S.step();
+    swapPlayers();
+    ++depth;
+    Result ret = depth <= _currentLevel ? test ( search_bound ) : test0();
+    --depth;
+    swapPlayers();
+    S.back();
+    return ret;
 }
 
 Result Engine::test0()
@@ -37,7 +52,6 @@ Result Engine::test0()
 
 Result Engine::test ( Result& search_bound )
 {
-    static int depth = 0;
     Result ret ( 1 ), src ( -1 );
     Generator possibleSteps ( getCurrentCollection() );
     Step nextStep;
@@ -47,16 +61,10 @@ Result Engine::test ( Result& search_bound )
         {
             return Result ( 1 ); // instant death
         }
-        nextStep.step();
-        ++depth;
-        swapPlayers();
-        Result next = depth <= _currentLevel ? test ( src ) : test0();
-        swapPlayers();
-        --depth;
-        nextStep.back();
+        Result next = seeker ( nextStep, src );
         if ( next.worseThan ( search_bound ) || next == search_bound )
         {
-            return Result(1); // dead branch
+            return Result ( 1 ); // dead branch
         }
         next >> ret;
     }
@@ -71,8 +79,6 @@ Result Engine::getResult()
     {
         return result;
     }
-
-    result = 1;
     Generator possibleSteps ( getCurrentCollection() );
     possibleSteps.randomize();
     Step nextStep;
@@ -81,29 +87,26 @@ Result Engine::getResult()
     {
         Result next ( 1 ), src ( -1 );
         possibleSteps.reset();
-        result = possibleSteps.nextRandom ( nextStep );
+        possibleSteps.nextRandom ( nextStep );
+        result = seeker ( nextStep, src );
         result.setStep ( nextStep );
 
         while ( possibleSteps.nextRandom ( nextStep ) )
         {
-            nextStep.step();
-            swapPlayers();
-            next = test ( src );
+            next = seeker ( nextStep, src );
             if ( next >> result )
             {
                 result.setStep ( nextStep );
             }
-            swapPlayers();
-            nextStep.back();
         }
 
         if ( !result.unsure() )
         {
-            log("broken")
+            log2_ ( "\nbroken at level:", _currentLevel )
             break;
         }
     }
     result.swap();
-    log3_ ( result.getStep().whatIs(), result, isPlayerTurn() );
+    log3_ ( result.getStep().whatIs(), result, stepCount() );
     return result;
 }

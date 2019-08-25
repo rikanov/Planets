@@ -152,6 +152,11 @@ bool Board::getStep ( uchr token, Step& S )
     return _currentOpponent->getStep ( token, S );
 }
 
+bool Board::getStep ( uchr ID, uchr dir, Step& S )
+{
+    return _currentOpponent->getStep ( ID, dir, S );
+}
+
 bool Board::isWinnerStep ( const Step & S )
 {
     return S.aim() == _WINNER_SPOT;
