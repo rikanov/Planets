@@ -1,5 +1,5 @@
 /*
- * BlackHole -- a simple abstract board game designed by myself
+ * BlackHole -- a simple abstract board game designed by Robert Ikanov
  * Copyright (C) 2019  Robert Ikanov, robert.ikanov@gmail.com
  *
  * This program is free software; you can redistribute it and/or modify
