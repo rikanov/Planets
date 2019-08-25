@@ -8,5 +8,6 @@ class BasicUI: public Engine
 public:
     BasicUI();
     void start();
+    void autoplay ( const int&, const int& );
 };
 #endif

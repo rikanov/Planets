@@ -28,5 +28,5 @@ static inline void Sleep ( int m )
 //static inline void CLR() { system("CLS"); };
 typedef unsigned char uchr;
 
-const int MAX_NUMBER_OF_MOVES = 200;
+const int MAX_NUMBER_OF_MOVES = 500;
 #endif

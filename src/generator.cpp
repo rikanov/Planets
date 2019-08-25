@@ -5,43 +5,56 @@ Generator::Generator ( const Collection * C,const bool& shuffle )
     , _stepID ( 0 )
     , __permute ( nullptr )
 {
-    if ( shuffle ) {
+    if ( shuffle )
+    {
         randomize();
     }
 }
 
 bool Generator::next ( Step& S )
 {
-    if ( _stepID < 40 ) {
+    if ( _stepID < 40 )
+    {
         return _coll->getStep ( _stepID++,S ) ? true : next ( S );
-    } else {
+    }
+    else
+    {
         return false;
     }
 }
 bool Generator::nextRandom ( Step& S )
 {
-    if ( _stepID < 40 ) {
+    if ( _stepID < 40 )
+    {
         return _coll->getStep ( __permute[_stepID++],S ) ? true : nextRandom ( S );
-    } else {
+    }
+    else
+    {
         return false;
     }
 }
 
 void Generator::randomize()
 {
-    if ( __permute == nullptr ) {
+    if ( __permute == nullptr )
+    {
         __permute = new uchr[40];
-        for ( int id = 0; id < 40; ++id ) {
+        for ( int id = 0; id < 40; ++id )
+        {
             __permute[id] = id;
         };
     }
     srand ( time ( NULL ) );
-    for ( int shuffles = 5; shuffles; ) {
+    for ( int shuffles = 5; shuffles; )
+    {
         const int i1 = rand() % 40;
         const int i2 = rand() % 40;
-        if ( i1 != i2 ) {
+        if ( i1 != i2 )
+        {
             std::swap ( __permute[i1], __permute[i2] );
-        } else {
+        }
+        else
+        {
             --shuffles;
         }
     }

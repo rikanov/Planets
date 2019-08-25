@@ -3,7 +3,8 @@
 
 #include "stone.h"
 
-enum Turn {
+enum Turn
+{
     MINE,
     YOURS
 };

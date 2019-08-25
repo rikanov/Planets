@@ -44,14 +44,16 @@ void StepStack::storeStep ( Step S )
 
 void StepStack::undoStep()
 {
-    if ( isStarted() ) {
+    if ( isStarted() )
+    {
         ( _currentMove-- )->back();
     }
 }
 
 void StepStack::redoStep()
 {
-    if ( ( _currentMove != _lastMove ) ) {
+    if ( ( _currentMove != _lastMove ) )
+    {
         ( ++_currentMove )->step();
     }
 }

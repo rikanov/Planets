@@ -7,7 +7,7 @@ class Result
     Step _step;
     static int sgn ( int R )
     {
-        return R == 0 ? 0 : R < 0 ? -1 : 1;
+        return R == 0 ? 0 : ( R < 0 ? -1 : 1 );
     }
 public:
     Result ( const int& R = -1 ) : _result ( R ) {}
@@ -69,7 +69,8 @@ public:
     bool operator << ( const Result& R )
     {
         const bool success = worseThan ( R );
-        if ( success ) {
+        if ( success )
+        {
             _result = R._result;
         }
         return success;
@@ -77,7 +78,8 @@ public:
     bool operator >> ( Result& R ) const
     {
         const bool success = worseThan ( R );
-        if ( success ) {
+        if ( success )
+        {
             R._result = _result;
         }
         return success;

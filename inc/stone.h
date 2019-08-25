@@ -11,7 +11,9 @@ public:
     Stone ( const Node* N, const std::string& S ) : _pNode ( N ), _name ( S )
     {
         if ( _pNode )
+        {
             _pNode->setStone ( this );
+        }
     }
     const Node * go ( uchr D ) const
     {
