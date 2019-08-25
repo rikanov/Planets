@@ -82,8 +82,8 @@ Result Engine::getResult()
     Generator possibleSteps ( getCurrentCollection() );
     possibleSteps.randomize();
     Step nextStep;
-
-    for ( _currentLevel =  1; _currentLevel <= _boundLevel; _currentLevel += 1 )
+    const int bound = (stepCount() < 5 && _boundLevel < 7) ? 7 :  _boundLevel;
+    for ( _currentLevel =  1; _currentLevel <= bound; _currentLevel += 1 )
     {
         Result next ( 1 ), src ( -1 );
         possibleSteps.reset();

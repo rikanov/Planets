@@ -44,7 +44,7 @@ void BasicUI::start()
             int p, d;
             commands >> p;
             commands >> d;
-            makeStep ( p, d );
+            makeStep ( p - 1, d );
             if ( isFinished() )
             {
                 log_ ( "Congrats! You won !!!" )
