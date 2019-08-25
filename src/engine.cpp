@@ -56,8 +56,7 @@ Result Engine::test ( Result& search_bound )
         nextStep.back();
         if ( next.worseThan ( search_bound ) || next == search_bound )
         {
-            ret = next; //return Result(1); // don't choose this one!
-            break;
+            return Result(1); // dead branch
         }
         next >> ret;
     }
@@ -98,8 +97,9 @@ Result Engine::getResult()
             nextStep.back();
         }
 
-        if ( result.lost() )
+        if ( !result.unsure() )
         {
+            log("broken")
             break;
         }
     }
