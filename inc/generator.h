@@ -6,8 +6,8 @@
 class Generator
 {
     const Collection * _coll;
-    uchr * __permute;
-    uchr _stepID;
+    uint8_t * __permute;
+    uint8_t _stepID;
 
 public:
     Generator ( const Collection * C,const bool& shuffle = false );

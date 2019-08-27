@@ -10,8 +10,8 @@ class Node
     mutable const Stone * _pStone = nullptr;
     int _row = 0, _col = 0;
 public:
-    const Node * go ( const uchr& ) const;
-    void connect ( Node* N, const uchr& D )
+    const Node * go ( const uint8_t& ) const;
+    void connect ( Node* N, const uint8_t& D )
     {
         __next[D] = N;
     }
@@ -23,16 +23,16 @@ public:
     {
         _pStone = S;
     }
-    void setPos ( uchr R, uchr C )
+    void setPos ( uint8_t R, uint8_t C )
     {
         _row = R;
         _col = C;
     }
-    uchr getRow() const
+    uint8_t getRow() const
     {
         return _row;
     }
-    uchr getCol() const
+    uint8_t getCol() const
     {
         return _col;
     }
@@ -40,7 +40,7 @@ public:
     {
         return _pStone == nullptr;
     }
-    const Node * next ( uchr U ) const
+    const Node * next ( uint8_t U ) const
     {
         return __next[U];
     }

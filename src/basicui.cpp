@@ -108,14 +108,14 @@ void BasicUI::start()
         std::cout << std::flush;
     }
 }
-void BasicUI::makeStep ( uchr token )
+void BasicUI::makeStep ( uint8_t token )
 {
     Step st;
     getStep ( token, st );
     storeStep ( st );
 }
 
-void BasicUI::makeStep ( uchr P, uchr D )
+void BasicUI::makeStep ( uint8_t P, uint8_t D )
 {
     Step st;
     getStep ( P, D, st );

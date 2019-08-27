@@ -147,17 +147,17 @@ const Collection * Board::getCurrentCollection() const
     return _currentOpponent;
 }
 
-bool Board::getStep ( uchr token, Step& S ) const
+bool Board::getStep ( uint8_t token, Step& S ) const
 {
     return _currentOpponent->getStep ( token, S );
 }
 
-bool Board::getStep ( uchr ID, uchr dir, Step& S ) const
+bool Board::getStep ( uint8_t ID, uint8_t dir, Step& S ) const
 {
     return _currentOpponent->getStep ( ID, dir, S );
 }
 
-bool Board::getStep ( uchr r1, uchr c1, uchr r2, uchr c3, Step& S ) const
+bool Board::getStep ( uint8_t r1, uint8_t c1, uint8_t r2, uint8_t c3, Step& S ) const
 {
     return _currentOpponent->getStep ( __theGrid[r1][ c1].getStone(), r2, c3, S );
 }

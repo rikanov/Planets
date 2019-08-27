@@ -17,8 +17,8 @@ public:
     Collection ( Turn, const Node * );
     ~Collection();
 
-    bool getStep ( uchr, Step& ) const;
-    bool getStep ( uchr ID, uchr dir, Step& S ) const;
-    bool getStep ( const Stone* st, uchr r2, uchr c3, Step& S ) const;
+    bool getStep ( uint8_t, Step& ) const;
+    bool getStep ( uint8_t ID, uint8_t dir, Step& S ) const;
+    bool getStep ( const Stone* st, uint8_t r2, uint8_t c3, Step& S ) const;
 };
 #endif

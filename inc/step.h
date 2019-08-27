@@ -9,7 +9,7 @@ class Step
     const Stone * _pStone;
     const Node * _from;
     const Node * _to;
-    uchr _token = 0xFF;
+    uint8_t _token = 0xFF;
 public:
     Step();
     Step ( const Stone * S,const Node * to );
@@ -32,11 +32,11 @@ public:
     {
         return _from == S->_to && _to == S->_from;
     }
-    void setToken ( uchr T )
+    void setToken ( uint8_t T )
     {
         _token = T;
     }
-    uchr getToken() const
+    uint8_t getToken() const
     {
         return _token;
     }

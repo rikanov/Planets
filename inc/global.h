@@ -5,6 +5,7 @@
 #include <sstream>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>
+#include <stdint.h>    /* uint_8 */
 #include <unistd.h>
 //#include <Windows.h>
 
@@ -26,7 +27,6 @@ static inline void Sleep ( int m )
 }
 //*/
 //static inline void CLR() { system("CLS"); };
-typedef unsigned char uchr;
 
 const int MAX_NUMBER_OF_MOVES = 500;
 #endif

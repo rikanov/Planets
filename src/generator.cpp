@@ -39,7 +39,7 @@ void Generator::randomize()
 {
     if ( __permute == nullptr )
     {
-        __permute = new uchr[40];
+        __permute = new uint8_t[40];
         for ( int id = 0; id < 40; ++id )
         {
             __permute[id] = id;

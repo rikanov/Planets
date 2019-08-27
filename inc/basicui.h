@@ -8,8 +8,8 @@ class BasicUI: public Engine
 public:
     BasicUI();
     void start();
-    void makeStep ( uchr );
-    void makeStep ( uchr, uchr );
+    void makeStep ( uint8_t );
+    void makeStep ( uint8_t, uint8_t );
     void autoplay ( const int&, const int& );
 };
 #endif

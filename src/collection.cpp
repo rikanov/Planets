@@ -15,12 +15,12 @@ Collection::Collection ( Turn T, const Node * S )
     }
 }
 
-bool Collection::getStep ( uchr ID, Step& S ) const
+bool Collection::getStep ( uint8_t ID, Step& S ) const
 {
     return getStep ( ID / 8, ID % 8, S );
 }
 
-bool Collection::getStep ( uchr ID, uchr dir, Step& S ) const
+bool Collection::getStep ( uint8_t ID, uint8_t dir, Step& S ) const
 {
     bool ret = false;
     const Stone* pStone = __collection[ID ];
@@ -34,12 +34,12 @@ bool Collection::getStep ( uchr ID, uchr dir, Step& S ) const
     return ret;
 }
 
-bool Collection::getStep ( const Stone * pStone, uchr r, uchr c, Step& S ) const
+bool Collection::getStep ( const Stone * pStone, uint8_t r, uint8_t c, Step& S ) const
 {
     bool ret = false;
     if ( pStone->getTeam() == this )
     {
-        uchr token;
+        uint8_t token;
         const Node * pNode = pStone->go ( r, c, token );
         ret = ( pNode != nullptr );
         S.set ( pStone, pNode );
