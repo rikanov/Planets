@@ -25,8 +25,6 @@ public:
     {
         _boundLevel = BL;
     }
-    void makeStep ( uchr );
-    void makeStep ( uchr, uchr );
     Result getResult();
 };
 #endif

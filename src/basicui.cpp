@@ -108,6 +108,19 @@ void BasicUI::start()
         std::cout << std::flush;
     }
 }
+void BasicUI::makeStep ( uchr token )
+{
+    Step st;
+    getStep ( token, st );
+    storeStep ( st );
+}
+
+void BasicUI::makeStep ( uchr P, uchr D )
+{
+    Step st;
+    getStep ( P, D, st );
+    storeStep ( st );
+}
 
 void BasicUI::autoplay ( const int& L1, const int& L2 )
 {

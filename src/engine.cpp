@@ -8,20 +8,6 @@ Engine::Engine()
     reset();
 }
 
-void Engine::makeStep ( uchr token )
-{
-    Step st;
-    getStep ( token, st );
-    storeStep ( st );
-}
-
-void Engine::makeStep ( uchr P, uchr D )
-{
-    Step st;
-    getStep ( P, D, st );
-    storeStep ( st );
-}
-
 Result Engine::seeker ( Step& S, Result& search_bound )
 {
     S.step();
