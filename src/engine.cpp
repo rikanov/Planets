@@ -4,6 +4,7 @@ Engine::Engine()
     :Board ( 5 )
 {
     _boundLevel = 5;
+    _deepSearchLevel = 0;
     reset();
 }
 
@@ -23,18 +24,31 @@ void Engine::makeStep ( uchr P, uchr D )
 
 Result Engine::seeker ( Step& S, Result& search_bound )
 {
-    static int depth = 0;
     S.step();
     swapPlayers();
-    ++depth;
-    Result ret = depth <= _currentLevel ? test ( search_bound ) : test0();
-    --depth;
+    ++_deepSearchLevel;
+    Result ret = _deepSearchLevel <= _currentLevel ? test ( search_bound ) : test0();
+    --_deepSearchLevel;
     swapPlayers();
     S.back();
     return ret;
 }
 
 Result Engine::test0()
+{
+    Generator possibleSteps ( getCurrentCollection() );
+    Step nextStep;
+    while ( possibleSteps.next ( nextStep ) )
+    {
+        if ( isWinnerStep ( nextStep ) )
+        {
+            return Result ( 1 );
+        }
+    }
+    return Result ( 0 );
+}
+
+Result Engine::test0_()
 {
     Generator possibleSteps ( getCurrentCollection() );
     Step nextStep;
@@ -74,15 +88,28 @@ Result Engine::test ( Result& search_bound )
 
 Result Engine::getResult()
 {
-    Result result = test0();
+    Result result;
+    Step nextStep;
+    if ( _boundLevel > 6 && !isStarted() )
+    {
+        getStep ( _cache.getOpeningToken(), nextStep );
+        result.setStep ( nextStep );
+        return result;
+    }
+    if ( _boundLevel > 6 && stepCount() == 1 )
+    {
+        getStep ( _cache.getResponseToken ( moveHistory ( -1 ).getToken() ), nextStep );
+        result.setStep ( nextStep );
+        return result;
+    }
+    result = test0_();
     if ( result.won() )
     {
         return result;
     }
     Generator possibleSteps ( getCurrentCollection() );
     possibleSteps.randomize();
-    Step nextStep;
-    const int bound = (stepCount() < 5 && _boundLevel < 7) ? 7 :  _boundLevel;
+    const int bound = ( stepCount() < 5 && _boundLevel < 7 ) ? 7 :  _boundLevel;
     for ( _currentLevel =  1; _currentLevel <= bound; _currentLevel += 1 )
     {
         Result next ( 1 ), src ( -1 );
@@ -90,7 +117,6 @@ Result Engine::getResult()
         possibleSteps.nextRandom ( nextStep );
         result = seeker ( nextStep, src );
         result.setStep ( nextStep );
-
         while ( possibleSteps.nextRandom ( nextStep ) )
         {
             next = seeker ( nextStep, src );
@@ -102,11 +128,9 @@ Result Engine::getResult()
 
         if ( !result.unsure() )
         {
-            log2_ ( "\nbroken at level:", _currentLevel )
             break;
         }
     }
     result.swap();
-    log3_ ( result.getStep().whatIs(), result, stepCount() );
     return result;
 }

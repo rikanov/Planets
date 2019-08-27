@@ -1,11 +1,13 @@
 #ifndef RESULT_HEADER__H
 #define RESULT_HEADER__H
 
+#include "step.h"
+
 class Result
 {
     int _result;
     Step _step;
-    static int sgn ( int R )
+    static inline int sgn ( int R )
     {
         return R == 0 ? 0 : ( R < 0 ? -1 : 1 );
     }

@@ -26,6 +26,7 @@ bool Generator::nextRandom ( Step& S )
 {
     if ( _stepID < 40 )
     {
+        S.setToken ( __permute[_stepID] );
         return _coll->getStep ( __permute[_stepID++],S ) ? true : nextRandom ( S );
     }
     else

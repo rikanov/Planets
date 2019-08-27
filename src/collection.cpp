@@ -28,6 +28,7 @@ bool Collection::getStep ( uchr ID, uchr dir, Step& S ) const
     if ( pNode != nullptr )
     {
         S.set ( pStone,pNode );
+        S.setToken ( dir + ID * 8 );
         ret = true;
     }
     return ret;

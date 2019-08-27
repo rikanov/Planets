@@ -12,6 +12,7 @@ add_executable(planets main.cpp
                                 src/collection.cpp
                                 src/board.cpp 
                                 src/generator.cpp
+                                src/cache.cpp
                                 src/engine.cpp
                                 src/basicui.cpp
                                 )

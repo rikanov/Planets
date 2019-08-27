@@ -17,7 +17,6 @@ private:
     const int _rows;
     const int _cols;
 
-    int _lastDepth = 0;
 public:
     Board ( const int& size = 5 );
     virtual ~Board();

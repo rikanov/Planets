@@ -36,7 +36,7 @@ public:
     {
         _token = T;
     }
-    uchr gettoken() const
+    uchr getToken() const
     {
         return _token;
     }
