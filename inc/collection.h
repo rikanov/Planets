@@ -19,5 +19,6 @@ public:
 
     bool getStep ( uchr, Step& ) const;
     bool getStep ( uchr ID, uchr dir, Step& S ) const;
+    bool getStep ( const Stone* st, uchr r2, uchr c3, Step& S ) const;
 };
 #endif

@@ -28,6 +28,14 @@ public:
         _row = R;
         _col = C;
     }
+    uchr getRow() const
+    {
+        return _row;
+    }
+    uchr getCol() const
+    {
+        return _col;
+    }
     bool isEmpty() const
     {
         return _pStone == nullptr;

@@ -23,8 +23,9 @@ public:
     void reset();
     void show() const;
     bool isPlayerTurn() const;
-    bool getStep ( uchr, Step& );
-    bool getStep ( uchr, uchr, Step& );
+    bool getStep ( uchr, Step& ) const;
+    bool getStep ( uchr, uchr, Step& ) const;
+    bool getStep ( uchr, uchr, uchr, uchr, Step& ) const;
     const Collection * getProgramCollection() const;
     const Collection * getPlayerCollection() const;
     const Collection * getCurrentCollection() const;

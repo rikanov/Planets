@@ -10,7 +10,7 @@ Collection::Collection ( Turn T, const Node * S )
     {
         std::string next = name;
         next.push_back ( id + '1' );
-        * ( pNext++ ) = new Stone ( S, next );
+        * ( pNext++ ) = new Stone ( S, this, id, next );
         S = S->next ( 2 ); // step right to get the next field
     }
 }
@@ -30,6 +30,20 @@ bool Collection::getStep ( uchr ID, uchr dir, Step& S ) const
         S.set ( pStone,pNode );
         S.setToken ( dir + ID * 8 );
         ret = true;
+    }
+    return ret;
+}
+
+bool Collection::getStep ( const Stone * pStone, uchr r, uchr c, Step& S ) const
+{
+    bool ret = false;
+    if ( pStone->getTeam() == this )
+    {
+        uchr token;
+        const Node * pNode = pStone->go ( r, c, token );
+        ret = ( pNode != nullptr );
+        S.set ( pStone, pNode );
+        S.setToken ( token );
     }
     return ret;
 }
