@@ -1,5 +1,9 @@
 #include "generator.h"
 
+#ifdef CONTINUE_BUILD_CACHE
+uint8_t * Generator::_preSetting = new uint8_t (0xFF);
+#endif
+
 Generator::Generator ( const Collection * C,const bool& shuffle )
     : _coll ( C )
     , _stepID ( 0 )
@@ -40,13 +44,13 @@ void Generator::randomize()
     if ( __permute == nullptr )
     {
         __permute = new uint8_t[40];
-        for ( int id = 0; id < 40; ++id )
+        for ( uint8_t id = 0; id < 40; ++id )
         {
             __permute[id] = id;
         };
     }
     srand ( time ( NULL ) );
-    for ( int shuffles = 5; shuffles; )
+    for ( uint8_t shuffles = 5; shuffles; )
     {
         const int i1 = rand() % 40;
         const int i2 = rand() % 40;

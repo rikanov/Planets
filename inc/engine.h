@@ -13,8 +13,11 @@ private:
     int _currentLevel;
     int _boundLevel;
     int _deepSearchLevel;
+    int _checkingLevel = 5;
 
     inline Result seeker ( Step&, Result& );
+
+    bool blink( Step&, Result& ) const;
     Result test0();
     Result test0_();
     Result test ( Result& search_bound );

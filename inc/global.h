@@ -5,9 +5,12 @@
 #include <sstream>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>
-#include <stdint.h>    /* uint_8 */
+#include <fstream>
 #include <unistd.h>
 //#include <Windows.h>
+
+//#define BUILD_CACHE
+//#define CONTINUE_BUILD_CACHE
 
 #define log(X) std::cout<<(X)<<' '<<std::flush;
 #define log2(X,Y) std::cout<<(X)<<' '<<(Y)<<' '<<std::flush;

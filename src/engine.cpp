@@ -10,13 +10,53 @@ Engine::Engine()
 
 Result Engine::seeker ( Step& S, Result& search_bound )
 {
-    S.step();
     swapPlayers();
+#ifndef BUILD_CACHE
+    S.step();
     ++_deepSearchLevel;
     Result ret = _deepSearchLevel <= _currentLevel ? test ( search_bound ) : test0();
+    S.back();
+#else
+    storeStep(S);
+    if ( ++_deepSearchLevel < _checkingLevel )
+    {
+        search_bound = -1;
+    }
+    Result ret = _deepSearchLevel <= _currentLevel ? test ( search_bound ) : test0();
+    if ( ret == 7 )
+    {
+        saveStack ( 1,ret );
+    }
+    if ( ret == -8 )
+    {
+        saveStack ( 2,ret );
+    }
+    if ( _deepSearchLevel < _checkingLevel && ret == 0 )
+    {
+        saveStack ( 0,ret );
+    }    
+    undoStep();
+#endif
     --_deepSearchLevel;
     swapPlayers();
-    S.back();
+    return ret;
+}
+
+bool Engine::blink ( Step& nextStep, Result& result ) const
+{
+    bool ret = false;
+    if ( _boundLevel > 6 && !isStarted() )
+    {
+        getStep ( _cache.getOpeningToken(),nextStep );
+        result.setStep ( nextStep );
+        ret = true;
+    }
+    if ( _boundLevel > 6 && stepCount() == 1 )
+    {
+        getStep ( _cache.getResponseToken ( moveHistory ( -1 ).getToken() ),nextStep );
+        result.setStep ( nextStep );
+        ret = true;
+    }
     return ret;
 }
 
@@ -55,18 +95,17 @@ Result Engine::test ( Result& search_bound )
     Result ret ( 1 ), src ( -1 );
     Generator possibleSteps ( getCurrentCollection() );
     Step nextStep;
-    while ( possibleSteps.next ( nextStep ) )
+    for ( Result next; possibleSteps.next ( nextStep );  next >> ret )
     {
         if ( isWinnerStep ( nextStep ) )
         {
             return Result ( 1 ); // instant death
         }
-        Result next = seeker ( nextStep, src );
+        next = seeker ( nextStep, src );
         if ( next.worseThan ( search_bound ) || next == search_bound )
         {
             return Result ( 1 ); // dead branch
-        }
-        next >> ret;
+        }        
     }
     search_bound << ret;
     return ret.swap();
@@ -76,47 +115,57 @@ Result Engine::getResult()
 {
     Result result;
     Step nextStep;
-    if ( _boundLevel > 6 && !isStarted() )
+#ifndef BUILD_CACHE
+    if ( blink ( nextStep, result ) )
     {
-        getStep ( _cache.getOpeningToken(), nextStep );
-        result.setStep ( nextStep );
         return result;
     }
-    if ( _boundLevel > 6 && stepCount() == 1 )
-    {
-        getStep ( _cache.getResponseToken ( moveHistory ( -1 ).getToken() ), nextStep );
-        result.setStep ( nextStep );
-        return result;
-    }
+#endif
     result = test0_();
     if ( result.won() )
     {
         return result;
     }
     Generator possibleSteps ( getCurrentCollection() );
+    const int bound = ( stepCount() < 5 && _boundLevel < 7 ) ? 7 : _boundLevel;
+#ifndef BUILD_CACHE
     possibleSteps.randomize();
-    const int bound = ( stepCount() < 5 && _boundLevel < 7 ) ? 7 :  _boundLevel;
-    for ( _currentLevel =  1; _currentLevel <= bound; _currentLevel += 1 )
+    for ( _currentLevel = 1; _currentLevel <= bound; _currentLevel += 1 )
     {
-        Result next ( 1 ), src ( -1 );
+        Result next ( 1 ),src ( -1 );
         possibleSteps.reset();
         possibleSteps.nextRandom ( nextStep );
-        result = seeker ( nextStep, src );
+        result = seeker ( nextStep,src );
         result.setStep ( nextStep );
         while ( possibleSteps.nextRandom ( nextStep ) )
         {
-            next = seeker ( nextStep, src );
+            next = seeker ( nextStep,src );
             if ( next >> result )
             {
                 result.setStep ( nextStep );
             }
         }
-
         if ( !result.unsure() )
         {
             break;
         }
     }
+#else
+    _currentLevel = _boundLevel;
+    Result next ( 1 ),src ( -1 );
+    possibleSteps.reset();
+    possibleSteps.next ( nextStep );
+    result = seeker ( nextStep,src );
+    result.setStep ( nextStep );
+    while ( possibleSteps.next ( nextStep ) )
+    {
+        next = seeker ( nextStep,src );
+        if ( next >> result )
+        {
+            result.setStep ( nextStep );
+        }
+    }
+#endif
     result.swap();
     return result;
 }

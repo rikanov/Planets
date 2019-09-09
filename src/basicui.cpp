@@ -26,7 +26,8 @@ void BasicUI::start()
         std::stringstream commands ( nextLine );
         char command;
         commands >> command;
-        if ( ( command | 32 ) == 'h' )
+        command |= 32;
+        if (  command  == 'h' )
         {
             log2_ ( "help   \t\t\t\t", 'H' )
             log2_ ( "step <planet> <direction> \t", 'S' )
@@ -39,7 +40,7 @@ void BasicUI::start()
             log2_ ( "autoplay <level> <level> \t", 'A' )
             refresh = false;
         }
-        else if ( ( command | 32 ) == 's' )
+        else if (  command == 's' )
         {
             int p, d;
             commands >> p;
@@ -53,33 +54,41 @@ void BasicUI::start()
                 reset();
             }
         }
-        else if ( ( command | 32 ) == 'l' )
+        else if (  command == 'l' )
         {
             int l = 7;
             commands >> l;
             setBoundLevel ( l );
         }
-        else if ( ( command | 32 ) == 'n' )
+        else if (  command  == 'n' )
         {
             reset();
         }
-        else if ( ( command | 32 ) == 'u' )
+        else if (  command  == 'u' )
         {
             undoStep();
         }
-        else if ( ( command | 32 ) == 'r' )
+        else if (  command  == 'r' )
         {
             redoStep();
         }
-        else if ( ( command | 32 ) == 'p' )
+        else if (  command  == 'p' )
         {
             swapPlayers();
         }
-        else if ( ( command | 32 ) == 'x' )
+#ifdef CONTINUE_BUILD_CACHE
+        else if( command == 'd' )
+        {
+            uint8_t preset[10] = {0xFF};
+            for(uint8_t index = 0; commands >> std::hex >> preset[index]; ++index) {}
+            Generator::_preSetting = preset;
+        }
+#endif
+        else if (  command  == 'x' )
         {
             exit = true;
         }
-        else if ( ( command | 32 ) == 'g' )
+        else if (  command  == 'g' )
         {
             swapPlayers();
             Step st = getResult().getStep();

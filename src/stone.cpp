@@ -26,7 +26,7 @@ const Node * Stone::go ( uint8_t D ) const
 const Node * Stone::go ( uint8_t r, uint8_t c, uint8_t& token ) const
 {
     const Node * ret = nullptr;
-    for ( int dir = 0; dir < 8; ++dir )
+    for ( uint8_t dir = 0; dir < 8; ++dir )
     {
         const Node * pNode = go ( dir );
         if ( pNode && pNode->getRow() == r && pNode->getCol() == c )

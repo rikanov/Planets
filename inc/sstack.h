@@ -7,12 +7,14 @@ class StepStack
 {
 protected:
     const int _stackSize;
+    std::ofstream _outfile[3];
     // Store steps for UI (undo, redo)
     Step * __moveHistory,*_currentMove,*_lastMove;
 
 public:
     StepStack ( const int& S = MAX_NUMBER_OF_MOVES );
     virtual ~StepStack();
+    void saveStack(int, int);
     bool isStarted() const
     {
         return _currentMove != __moveHistory + 1;

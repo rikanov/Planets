@@ -1,12 +1,13 @@
 #include "collection.h"
 
-Collection::Collection ( Turn T, const Node * S )
+Collection::Collection ( Opponent T, const Node * S, uint8_t size )
+  :_size(size)
 {
-    __collection = new Stone * [6];
+    __collection = new Stone * [_size + 1];
     __collection[5] = nullptr;
     Stone ** pNext = __collection;
     std::string name = T == MINE ? "A" : "X";
-    for ( int id = 0; id < 5; ++id )
+    for ( uint8_t id = 0; id < _size; ++id )
     {
         std::string next = name;
         next.push_back ( id + '1' );

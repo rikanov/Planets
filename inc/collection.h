@@ -3,7 +3,7 @@
 
 #include "stone.h"
 
-enum Turn
+enum Opponent
 {
     MINE,
     YOURS
@@ -12,9 +12,10 @@ enum Turn
 class Collection
 {
     Stone ** __collection;
+    const uint8_t _size;
 
 public:
-    Collection ( Turn, const Node * );
+    Collection ( Opponent, const Node *, uint8_t );
     ~Collection();
 
     bool getStep ( uint8_t, Step& ) const;

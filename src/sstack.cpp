@@ -16,14 +16,20 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
-
 #include "sstack.h"
 
+
+static const char* UNS_DAT = "meta_un_2_7.dat";
+static const char * WIN_DAT = "meta_win_2_7.dat";
+static const char * LOSE_DAT = "meta_lose_2_7.dat";
+  
 StepStack::StepStack ( const int& size )
     :_stackSize ( size )
     ,__moveHistory ( nullptr )
 {
+  _outfile[0].open(UNS_DAT,std::ios_base::app);
+  _outfile[1].open(WIN_DAT,std::ios_base::app);
+  _outfile[2].open(LOSE_DAT,std::ios_base::app);
 }
 
 void StepStack::resetStack()
@@ -33,6 +39,28 @@ void StepStack::resetStack()
     __moveHistory = new Step[_stackSize + 1];
     _currentMove = _lastMove = __moveHistory + 1;
     // -------------- //
+}
+
+void StepStack::saveStack(int fileID, int iData )
+{
+  std::ofstream& outfile = _outfile[fileID];
+ // outfile << iData << ' ';
+  if (iData == 0) log("Unsure")
+  if (iData  < 0) log("  Lost")
+  if (iData  > 0) log("   win")
+  for (auto p = __moveHistory + 2; p != _currentMove + 1; ++p) 
+  {
+    const int q = (int)p->getToken();
+    if (q < 0x10)
+    {
+      outfile << 0;
+      std::cout << 0;
+    }
+    outfile << std::hex << (int)p->getToken() << ' ';
+    std::cout << std::hex << (int)p->getToken() << ' ';
+  }
+  outfile << '\n';
+  log_("")
 }
 
 void StepStack::storeStep ( Step S )
@@ -66,5 +94,8 @@ bool StepStack::isLoop() const
 
 StepStack::~StepStack()
 {
-    delete[] __moveHistory;
+  _outfile[0].close();
+  _outfile[1].close();
+  _outfile[2].close();
+  delete[] __moveHistory;
 }
