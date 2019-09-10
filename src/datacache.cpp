@@ -18,13 +18,56 @@
 
 #include "datacache.h"
 
-inline void makeSuffix(std::string& suffix, char s, char d)
+static inline void makeSuffix(std::string& suffix, char s, char d)
 {
         suffix = "_";
         suffix.push_back(s);
         suffix.push_back('_');
         suffix.push_back(d);
         suffix.append(".dat");
+}
+
+static inline void flipV(int& r)
+{
+    r = 8 * ( 4 - r / 8 ) /* swapplanets */ + ( 8 - r % 8 ) % 8 /* rotate direction */;
+}
+
+static inline void flipH(int& r)
+{
+    uint8_t d;
+    switch( r % 8 )
+    {
+        case 0:
+            d = 4;
+            break;
+        case 1:
+            d = 3;
+            break;
+        case 2:
+            d = 2;
+            break;
+        case 3:
+            d = 1;
+            break;
+        case 4:
+            d = 0;
+            break;
+        case 5:
+            d = 7;
+            break;
+        case 6:
+            d = 6;
+            break;
+        case 7:
+            d = 5;
+            break;
+        default:
+            d = 0;
+            log("error")
+            break;
+    }
+    r &= 111000;
+    r += d;    
 }
 
 DataLine::DataLine()
@@ -52,11 +95,35 @@ DataLine* DataLine::route(uint8_t way)
 
 void DataLine::storeRoute(const std::string& way, Result R)
 {
-    std::stringstream toRoute(way);
     DataLine * current = this;
     
+    std::stringstream toRoute(way);
     for (int r = 0; toRoute >> std::hex >> r; current = current->route(r) );
+    current->setResult(R);
     
+    current = this;
+    std::stringstream flipVer(way);
+    for (int r = 0; flipVer >> std::hex >> r; current = current->route(r) )
+    {
+        flipV(r);
+    }
+    current->setResult(R);
+    
+    current = this;
+    std::stringstream flipHor(way);
+    for (int r = 0; flipHor >> std::hex >> r; current = current->route(r) )
+    {
+        flipH(r);
+    }
+    current->setResult(R);
+    
+    current = this;
+    std::stringstream flip(way);
+    for (int r = 0; flip >> std::hex >> r; current = current->route(r) )
+    {
+        flipV(r);
+        flipH(r);
+    }
     current->setResult(R);
 }
 
@@ -100,7 +167,7 @@ void DataCache::readFromFile(const std::string& prefix, const std::string& suffi
         for (std::string nextLine; std::getline(file, nextLine); )
         {
            ++ _counter; ++C; if (C < 20) {log_("  " + nextLine) }
-            _root->storeRoute(nextLine + "\t", (int)res);
+            _root->storeRoute(nextLine , res);
         }
         file.close();
     }

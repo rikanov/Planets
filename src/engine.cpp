@@ -15,7 +15,7 @@ Result Engine::seeker ( Step& S, Result& search_bound )
     storeStep(S);
     ++_deepSearchLevel;
     Result ret;
-    if ( ! fromChache(ret))
+    if (  ! fromChache(ret) )
     {
         ret= _deepSearchLevel <= _currentLevel ? test ( search_bound ) : test0();
     }
@@ -122,7 +122,7 @@ Result Engine::getResult()
 #ifndef BUILD_CACHE
     if ( blink ( nextStep, result ) )
     {
-        return result;
+        //return result;
     }
 #endif
     result = test0_();
