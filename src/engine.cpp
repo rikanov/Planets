@@ -121,8 +121,8 @@ Result Engine::getResult()
     Step nextStep;
 #ifndef BUILD_CACHE
     if ( blink ( nextStep, result ) )
-    {
-        //return result;
+    {log("res")
+        return result;
     }
 #endif
     result = test0_();
