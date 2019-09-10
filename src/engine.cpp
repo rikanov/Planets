@@ -12,10 +12,14 @@ Result Engine::seeker ( Step& S, Result& search_bound )
 {
     swapPlayers();
 #ifndef BUILD_CACHE
-    S.step();
+    storeStep(S);
     ++_deepSearchLevel;
-    Result ret = _deepSearchLevel <= _currentLevel ? test ( search_bound ) : test0();
-    S.back();
+    Result ret;
+    if ( ! fromChache(ret))
+    {
+        ret= _deepSearchLevel <= _currentLevel ? test ( search_bound ) : test0();
+    }
+    undoStep();
 #else
     storeStep(S);
     if ( ++_deepSearchLevel < _checkingLevel )

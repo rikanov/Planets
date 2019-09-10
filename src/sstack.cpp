@@ -19,17 +19,12 @@
 #include "sstack.h"
 
 
-static const char* UNS_DAT = "meta_un_2_7.dat";
-static const char * WIN_DAT = "meta_win_2_7.dat";
-static const char * LOSE_DAT = "meta_lose_2_7.dat";
+static const char* DAT[] = {  "meta_un_2_7.dat", "meta_win_2_7.dat", "meta_lose_2_7.dat" };
   
 StepStack::StepStack ( const int& size )
     :_stackSize ( size )
     ,__moveHistory ( nullptr )
 {
-  _outfile[0].open(UNS_DAT,std::ios_base::app);
-  _outfile[1].open(WIN_DAT,std::ios_base::app);
-  _outfile[2].open(LOSE_DAT,std::ios_base::app);
 }
 
 void StepStack::resetStack()
@@ -43,8 +38,8 @@ void StepStack::resetStack()
 
 void StepStack::saveStack(int fileID, int iData )
 {
-  std::ofstream& outfile = _outfile[fileID];
- // outfile << iData << ' ';
+ std::ofstream outfile;
+ outfile.open(DAT [fileID], std::ios::app );
   if (iData == 0) log("Unsure")
   if (iData  < 0) log("  Lost")
   if (iData  > 0) log("   win")
@@ -61,6 +56,7 @@ void StepStack::saveStack(int fileID, int iData )
   }
   outfile << '\n';
   log_("")
+  outfile.close();
 }
 
 void StepStack::storeStep ( Step S )
@@ -91,6 +87,10 @@ bool StepStack::isLoop() const
     return isStarted() && _currentMove->inverseOf ( _currentMove - 2 );
 }
 
+bool StepStack::fromChache(Result& R) const
+{
+    return _cache.getResult(__moveHistory + 2, _currentMove + 1, R);
+}
 
 StepStack::~StepStack()
 {

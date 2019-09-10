@@ -9,6 +9,7 @@ add_executable(planets main.cpp
                                 src/stone.cpp
                                 src/step.cpp 
                                 src/sstack.cpp
+                                src/datacache.cpp
                                 src/collection.cpp
                                 src/board.cpp 
                                 src/generator.cpp
