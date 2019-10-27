@@ -1,7 +1,7 @@
 #include "collection.h"
 
 Collection::Collection ( Opponent T, const Node * S, uint8_t size )
-  :_size(size)
+    :_size ( size )
 {
     __collection = new Stone * [_size + 1];
     __collection[5] = nullptr;
@@ -47,6 +47,13 @@ bool Collection::getStep ( const Stone * pStone, uint8_t r, uint8_t c, Step& S )
         S.setToken ( token );
     }
     return ret;
+}
+
+void Collection::getPos ( uint8_t ID, uint8_t& R, uint8_t& C ) const
+{
+    const Node * pNode = __collection[ID]->getNode();
+    R = pNode->getRow();
+    C = pNode->getCol();
 }
 
 Collection::~Collection()

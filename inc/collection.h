@@ -21,5 +21,6 @@ public:
     bool getStep ( uint8_t, Step& ) const;
     bool getStep ( uint8_t ID, uint8_t dir, Step& S ) const;
     bool getStep ( const Stone* st, uint8_t r2, uint8_t c3, Step& S ) const;
+    void getPos ( uint8_t, uint8_t&, uint8_t& ) const;
 };
 #endif

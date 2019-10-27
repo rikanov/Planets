@@ -16,6 +16,7 @@ add_executable(planets main.cpp
                                 src/cache.cpp
                                 src/engine.cpp
                                 src/basicui.cpp
+                                src/view2d.cpp
                                 )
 
 install(TARGETS planets RUNTIME DESTINATION bin)

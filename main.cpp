@@ -20,9 +20,19 @@
 #include "global.h"
 #include "basicui.h"
 #include "generator.h"
+#include "view2d.h"
 
+void stopSDL()
+{
+    SDL_Quit();
+}
 int main()
 {
+    std::atexit ( stopSDL );
+    Engine board;
+    View2D teszt ( "BOARD", 450, 630, board );
+    teszt.select();
+    return 0;//*/
     BasicUI ui;
     ui.start();
     return 0;
