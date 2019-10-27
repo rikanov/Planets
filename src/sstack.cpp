@@ -19,8 +19,8 @@
 #include "sstack.h"
 
 
-static const char* DAT[] = {  "meta_un_2_7.dat", "meta_win_2_7.dat", "meta_lose_2_7.dat" };
-  
+static const char* DAT[] = {  "meta_un_3_0.dat", "meta_win_3_0.dat", "meta_lose_3_0.dat" };
+
 StepStack::StepStack ( const int& size )
     :_stackSize ( size )
     ,__moveHistory ( nullptr )
@@ -36,27 +36,21 @@ void StepStack::resetStack()
     // -------------- //
 }
 
-void StepStack::saveStack(int fileID, int iData )
+void StepStack::saveStack ( int fileID, int iData )
 {
- std::ofstream outfile;
- outfile.open(DAT [fileID], std::ios::app );
-  if (iData == 0) log("Unsure")
-  if (iData  < 0) log("  Lost")
-  if (iData  > 0) log("   win")
-  for (auto p = __moveHistory + 2; p != _currentMove + 1; ++p) 
-  {
-    const int q = (int)p->getToken();
-    if (q < 0x10)
+    std::ofstream outfile;
+    outfile.open ( DAT [fileID], std::ios::app );
+    for ( auto p = __moveHistory + 2; p != _currentMove + 1; ++p )
     {
-      outfile << 0;
-      std::cout << 0;
+        const int q = ( int ) p->getToken();
+        if ( q < 0x10 )
+        {
+            outfile << 0;
+        }
+        outfile << std::hex << ( int ) p->getToken() << ' ';
     }
-    outfile << std::hex << (int)p->getToken() << ' ';
-    std::cout << std::hex << (int)p->getToken() << ' ';
-  }
-  outfile << '\n';
-  log_("")
-  outfile.close();
+    outfile << '\n';
+    outfile.close();
 }
 
 void StepStack::storeStep ( Step S )
@@ -87,15 +81,15 @@ bool StepStack::isLoop() const
     return isStarted() && _currentMove->inverseOf ( _currentMove - 2 );
 }
 
-bool StepStack::fromChache(Result& R) const
+bool StepStack::fromChache ( Result& R ) const
 {
-    return _cache.getResult(__moveHistory + 2, _currentMove + 1, R);
+    return _cache.getResult ( __moveHistory + 2, _currentMove + 1, R );
 }
 
 StepStack::~StepStack()
 {
-  _outfile[0].close();
-  _outfile[1].close();
-  _outfile[2].close();
-  delete[] __moveHistory;
+    _outfile[0].close();
+    _outfile[1].close();
+    _outfile[2].close();
+    delete[] __moveHistory;
 }

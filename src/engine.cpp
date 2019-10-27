@@ -1,4 +1,5 @@
 #include "engine.h"
+#include <thread>
 
 Engine::Engine()
     :Board ( 5 )
@@ -12,16 +13,16 @@ Result Engine::seeker ( Step& S, Result& search_bound )
 {
     swapPlayers();
 #ifndef BUILD_CACHE
-    storeStep(S);
+    storeStep ( S );
     ++_deepSearchLevel;
     Result ret;
-    if (  ! fromChache(ret) )
+    if ( ! fromChache ( ret ) )
     {
         ret= _deepSearchLevel <= _currentLevel ? test ( search_bound ) : test0();
     }
     undoStep();
 #else
-    storeStep(S);
+    storeStep ( S );
     if ( ++_deepSearchLevel < _checkingLevel )
     {
         search_bound = -1;
@@ -38,7 +39,7 @@ Result Engine::seeker ( Step& S, Result& search_bound )
     if ( _deepSearchLevel < _checkingLevel && ret == 0 )
     {
         saveStack ( 0,ret );
-    }    
+    }
     undoStep();
 #endif
     --_deepSearchLevel;
@@ -109,7 +110,7 @@ Result Engine::test ( Result& search_bound )
         if ( next.worseThan ( search_bound ) || next == search_bound )
         {
             return Result ( 1 ); // dead branch
-        }        
+        }
     }
     search_bound << ret;
     return ret.swap();
@@ -121,7 +122,7 @@ Result Engine::getResult()
     Step nextStep;
 #ifndef BUILD_CACHE
     if ( blink ( nextStep, result ) )
-    {log("res")
+    {
         return result;
     }
 #endif
@@ -131,9 +132,9 @@ Result Engine::getResult()
         return result;
     }
     Generator possibleSteps ( getCurrentCollection() );
-    const int bound = ( stepCount() < 5 && _boundLevel < 7 ) ? 7 : _boundLevel;
 #ifndef BUILD_CACHE
     possibleSteps.randomize();
+    const int bound = ( stepCount() < 5 && _boundLevel < 7 ) ? 7 : _boundLevel;
     for ( _currentLevel = 1; _currentLevel <= bound; _currentLevel += 1 )
     {
         Result next ( 1 ),src ( -1 );

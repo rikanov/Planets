@@ -17,7 +17,7 @@ private:
 
     inline Result seeker ( Step&, Result& );
 
-    bool blink( Step&, Result& ) const;
+    bool blink ( Step&, Result& ) const;
     Result test0();
     Result test0_();
     Result test ( Result& search_bound );

@@ -16,7 +16,10 @@ private:
 
     const int _rows;
     const int _cols;
-
+public:
+    const Collection * getProgramCollection() const;
+    const Collection * getPlayerCollection() const;
+    const Collection * getCurrentCollection() const;
 public:
     Board ( const int& size = 5 );
     virtual ~Board();
@@ -26,9 +29,7 @@ public:
     bool getStep ( uint8_t, Step& ) const;
     bool getStep ( uint8_t, uint8_t, Step& ) const;
     bool getStep ( uint8_t, uint8_t, uint8_t, uint8_t, Step& ) const;
-    const Collection * getProgramCollection() const;
-    const Collection * getPlayerCollection() const;
-    const Collection * getCurrentCollection() const;
+    bool getStep ( uint8_t, uint8_t, uint8_t, Step& ) const;
     bool isWinnerStep ( const Step& );
     void swapPlayers();
     bool isFinished() const;

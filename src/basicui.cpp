@@ -20,14 +20,14 @@ void BasicUI::start()
             refresh = true;
         }
         std::cout << std::endl;
-        log2 ( "player", isPlayerTurn() ? "X >" : "A >" )
+        clog2 ( "player", isPlayerTurn() ? "X >" : "A >" )
         std::string nextLine;
         getline ( std::cin, nextLine );
         std::stringstream commands ( nextLine );
         char command;
         commands >> command;
         command |= 32;
-        if (  command  == 'h' )
+        if ( command  == 'h' )
         {
             log2_ ( "help   \t\t\t\t", 'H' )
             log2_ ( "step <planet> <direction> \t", 'S' )
@@ -40,7 +40,7 @@ void BasicUI::start()
             log2_ ( "autoplay <level> <level> \t", 'A' )
             refresh = false;
         }
-        else if (  command == 's' )
+        else if ( command == 's' )
         {
             int p, d;
             commands >> p;
@@ -54,41 +54,41 @@ void BasicUI::start()
                 reset();
             }
         }
-        else if (  command == 'l' )
+        else if ( command == 'l' )
         {
             int l = 7;
             commands >> l;
             setBoundLevel ( l );
         }
-        else if (  command  == 'n' )
+        else if ( command  == 'n' )
         {
             reset();
         }
-        else if (  command  == 'u' )
+        else if ( command  == 'u' )
         {
             undoStep();
         }
-        else if (  command  == 'r' )
+        else if ( command  == 'r' )
         {
             redoStep();
         }
-        else if (  command  == 'p' )
+        else if ( command  == 'p' )
         {
             swapPlayers();
         }
 #ifdef CONTINUE_BUILD_CACHE
-        else if( command == 'd' )
+        else if ( command == 'd' )
         {
             uint8_t preset[10] = {0xFF};
-            for(uint8_t index = 0; commands >> std::hex >> preset[index]; ++index) {}
+            for ( uint8_t index = 0; commands >> std::hex >> preset[index]; ++index ) {}
             Generator::_preSetting = preset;
         }
 #endif
-        else if (  command  == 'x' )
+        else if ( command  == 'x' )
         {
             exit = true;
         }
-        else if (  command  == 'g' )
+        else if ( command  == 'g' )
         {
             swapPlayers();
             Step st = getResult().getStep();

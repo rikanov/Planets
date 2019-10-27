@@ -16,7 +16,7 @@ protected:
 public:
     StepStack ( const int& S = MAX_NUMBER_OF_MOVES );
     virtual ~StepStack();
-    void saveStack(int, int);
+    void saveStack ( int, int );
     bool isStarted() const
     {
         return _currentMove != __moveHistory + 1;
@@ -33,7 +33,7 @@ public:
     {
         return index < 0 ? * ( _currentMove + index + 1 ) : __moveHistory[index];
     }
-    bool fromChache(Result& R) const;
+    bool fromChache ( Result& R ) const;
     void resetStack();
     void storeStep ( Step S );
     void undoStep();

@@ -79,7 +79,7 @@ void Board::reset()
     delete _collectionOfProgram;
 
     _collectionOfPlayer = new Collection ( YOURS, &__theGrid[1][1], _cols /*size*/ );
-    _collectionOfProgram = new Collection ( MINE, &__theGrid[_rows][1], _cols /*size*/);
+    _collectionOfProgram = new Collection ( MINE, &__theGrid[_rows][1], _cols /*size*/ );
     _currentOpponent = _collectionOfPlayer;
     resetStack();
 }
@@ -157,9 +157,23 @@ bool Board::getStep ( uint8_t ID, uint8_t dir, Step& S ) const
     return _currentOpponent->getStep ( ID, dir, S );
 }
 
-bool Board::getStep ( uint8_t r1, uint8_t c1, uint8_t r2, uint8_t c3, Step& S ) const
+bool Board::getStep ( uint8_t r1, uint8_t c1, uint8_t r2, uint8_t c2, Step& S ) const
 {
-    return _currentOpponent->getStep ( __theGrid[r1][ c1].getStone(), r2, c3, S );
+    return _currentOpponent->getStep ( __theGrid[r1][ c1].getStone(), r2, c2, S );
+}
+
+bool Board::getStep ( uint8_t ID, uint8_t row, uint8_t col, Step& S ) const
+{
+    bool ret = false;
+    for ( uint8_t dir = 0; dir < 8; ++dir )
+    {
+        if ( _currentOpponent->getStep ( ID, dir, S ) && S.aim() == & __theGrid[row][col] )
+        {
+            ret = true;
+            break;
+        }
+    }
+    return ret;
 }
 
 bool Board::isWinnerStep ( const Step & S )

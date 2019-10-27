@@ -8,16 +8,22 @@ class DataLine
 {
     Result _result;
     DataLine ** _route;
-    
+
 public:
     DataLine();
     ~DataLine();
-    
-    DataLine* route(uint8_t);
-    void storeRoute(const std::string& way, Result R);
-    void setResult(Result R) { _result = R; }
-    Result getResult() const { return _result; }
-    
+
+    DataLine* route ( uint8_t );
+    void storeRoute ( const std::string& way, Result R );
+    void setResult ( Result R )
+    {
+        _result = R;
+    }
+    Result getResult() const
+    {
+        return _result;
+    }
+
 };
 class DataCache
 {
@@ -28,9 +34,12 @@ public:
      * Default constructor
      */
     DataCache();
-    void readFromFile(const std::string& prefix, const std::string& suffix );
-    bool getResult(const Step* , const Step*, Result&) const;
-    int count() const { return _counter; }
+    void readFromFile ( const std::string& prefix, const std::string& suffix );
+    bool getResult ( const Step*, const Step*, Result& ) const;
+    int count() const
+    {
+        return _counter;
+    }
     /**
      * Destructor
      */

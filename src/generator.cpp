@@ -1,7 +1,7 @@
 #include "generator.h"
 
 #ifdef CONTINUE_BUILD_CACHE
-uint8_t * Generator::_preSetting = new uint8_t (0xFF);
+uint8_t * Generator::_preSetting = new uint8_t ( 0xFF );
 #endif
 
 Generator::Generator ( const Collection * C,const bool& shuffle )

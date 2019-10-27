@@ -23,7 +23,7 @@ public:
 #ifndef CONTINUE_BUILD_CACHE
         _stepID = 0;
 #else
-        _stepID = *_preSetting != 0xFF ? *(_preSetting++) : 0;
+        _stepID = *_preSetting != 0xFF ? * ( _preSetting++ ) : 0;
 #endif
     }
 };
