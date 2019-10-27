@@ -50,6 +50,11 @@ class View2D
     SDL_Rect getPosition ( const int& team, const int& ID ) const;
     SDL_Rect getDirectPosition ( const int& col, const int& row ) const;
     bool pickUp ( const int& coX, const int& coY );
+    void noPickUp()
+    {
+        _selected_team = 0xFF;
+        _selected_ID = 0xFF;
+    }
     void placeStone ( SDL_Event& );
     void refreshStones() const;
     void showStones() const;
@@ -58,12 +63,13 @@ class View2D
     void createWindow();
     void loadTextureImage();
 
-    void show ( const bool& refresh_stones = true ) const;
+    void show ( ) const;
 
 public:
     View2D ( const char* name,const int w, const int h, Engine& );
     ~View2D();
     void select();
+    void reset();
 };
 
 #endif // VIEW2D_H

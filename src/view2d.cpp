@@ -167,8 +167,7 @@ SDL_Rect View2D::getDirectPosition ( const int& row, const int& col ) const
 bool View2D::pickUp ( const int& coX, const int& coY )
 {
     bool result = false;
-    _selected_team = 0xFF;
-    _selected_ID = 0xFF;
+    noPickUp();
     for ( uint8_t T = 0 /**/; T < 2; ++T )
         for ( uint8_t i = 0; i < 5; ++i )
         {
@@ -190,16 +189,27 @@ void View2D::glidingEffect ( const Step& step )
 {
 }
 
-void View2D::show ( const bool& refresh_stones ) const
+void View2D::show ( ) const
 {
     SDL_RenderClear ( _render );
     SDL_RenderCopy ( _render, _boardBackground, NULL,NULL );
     SDL_RenderCopy ( _render,_boardTexture,NULL,&_boardPosition );
-    if ( refresh_stones )
-    {
-        refreshStones();
-    }
+    refreshStones();
     showStones();
+}
+
+void View2D::reset()
+{
+    SDL_Event event;
+    SDL_FlushEvents ( SDL_MOUSEMOTION, SDL_MOUSEWHEEL );
+    SDL_WaitEvent ( &event );
+    while ( event.button.button != SDL_PRESSED )
+    {
+        SDL_PollEvent ( &event );
+    }
+    SDL_Delay ( 500 );
+    _engine.reset();
+    show();
 }
 
 void View2D::placeStone ( SDL_Event &event )
@@ -222,21 +232,32 @@ void View2D::placeStone ( SDL_Event &event )
         Step S;
         if ( _engine.getStep ( _selected_ID, 8 - row /*invert*/, col, S ) )
         {
+            noPickUp();
             _engine.storeStep ( S );
-            _engine.swapPlayers();
-            _selected_team = 0xFF;
-            refreshStones();
             show();
-            S = _engine.getResult().getStep();
-            _engine.storeStep ( S );
-            refreshStones();
-            show();
-            _engine.swapPlayers();
+            if ( _engine.isWinnerStep ( S ) )
+            {
+                reset();
+            }
+            else
+            {
+                _engine.swapPlayers();
+                S = _engine.getResult().getStep();
+                _engine.storeStep ( S );
+                show();
+                if ( _engine.isWinnerStep ( S ) )
+                {
+                    reset();
+                }
+                else
+                {
+                    _engine.swapPlayers();
+                }
+            }
         }
         else
         {
-            _selected_team = 0xFF;
-            refreshStones();
+            noPickUp();
             show();
         }
     }
