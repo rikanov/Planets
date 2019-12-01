@@ -32,8 +32,5 @@ int main()
     Engine board;
     View2D teszt ( "BOARD", 450, 630, board );
     teszt.select();
-    return 0;//*/
-    BasicUI ui;
-    ui.start();
     return 0;
 }

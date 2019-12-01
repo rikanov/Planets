@@ -13,7 +13,6 @@ private:
     int _currentLevel;
     int _boundLevel;
     int _deepSearchLevel;
-    int _checkingLevel = 5;
 
     inline Result seeker ( Step&, Result& );
 
