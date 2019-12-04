@@ -12,6 +12,11 @@ class Result
         return R == 0 ? 0 : ( R < 0 ? -1 : 1 );
     }
 public:
+
+    static const Result Best;
+    static const Result Worst;
+    static const Result Unsure;
+
     Result ( const int& R = -1 ) : _result ( R ) {}
     const int& result() const
     {
@@ -57,10 +62,9 @@ public:
     {
         return _result > r;
     } //*/
-    const Result& swap()
+    const Result swap() const
     {
-        _result = -_result - sgn ( _result );
-        return *this;
+        return Result ( -_result - sgn ( _result ) );
     }
     bool worseThan ( const Result& R ) const
     {
