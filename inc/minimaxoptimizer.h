@@ -30,26 +30,33 @@ class MiniMaxOptimizer: public Board
         SKIPPED,
         UPDATED
     };
-    int _size;
+    int _maximumLevel;
 
     Result ** _stackPointer;
     int _lineIndex;
-    int _level;
-
+    
     void makeBranch();
     void removeBranch();
     void updateBranch();
-    bool searchEnd();
 
     UpdateResult checkForUpdate ( const Result& );
-
+    
+    
+    inline bool searchEnded()
+    {
+        return _lineIndex == _maximumLevel;
+    }
     inline void jumpToParentNode()
     {
         --_lineIndex;
     }
-    inline Result& lineEnd()
+    inline const Result& lineEnd()
     {
         return * ( _stackPointer[_lineIndex] );
+    }
+    inline void setLineEnd(const Result& R)
+    {
+        * ( _stackPointer[_lineIndex] ) = R;
     }
     inline Result lastFound()
     {
