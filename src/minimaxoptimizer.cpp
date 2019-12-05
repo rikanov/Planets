@@ -20,9 +20,8 @@
 #include "minimaxoptimizer.h"
 
 MiniMaxOptimizer::MiniMaxOptimizer ( const int & depth )
-    : _size ( depth ),
-      _lineIndex ( 0 ),
-      _level ( depth ),
+    : _lineIndex ( 0 ),
+      _maximumLevel ( depth ),
       _stackPointer ( new Result * [depth] )
 {
     for ( int rowIndex = 0; rowIndex < _size; ++rowIndex )
@@ -31,7 +30,7 @@ MiniMaxOptimizer::MiniMaxOptimizer ( const int & depth )
     }
 }
 
-void MiniMaxOptimizer::makeBranch()
+void MiniMaxOptimizer::createBranch()
 {
     * ( ++_stackPointer[++_lineIndex] ) = Result::Best;
     for ( int next = _lineIndex + 1; next < _level ; ++next )
@@ -57,10 +56,7 @@ void MiniMaxOptimizer::updateBranch()
         * ( --_stackPointer[next] ) = toClone;
     }
 }
-bool MiniMaxOptimizer::searchEnd()
-{
-    return ++_lineIndex == _level;
-}
+
 MiniMaxOptimizer::UpdateResult MiniMaxOptimizer::checkForUpdate ( const Result& R )
 {
     if ( ! ( _stackPointer[_lineIndex] - 1 )->worseThan ( R ) )
@@ -77,19 +73,20 @@ MiniMaxOptimizer::UpdateResult MiniMaxOptimizer::checkForUpdate ( const Result& 
 
 Result MiniMaxOptimizer::test ( const Step& st )
 {
-    if ( searchEnd() )
-    {
-        return isWinnerStep ( st );
-    }
-    makeBranch();
+    storeStep( st );
     Generator possibleSteps ( getCurrentCollection() );
     Step nextStep;
     while ( possibleSteps.next ( nextStep ) )
     {
         if ( isWinnerStep ( nextStep ) )
         {
-            return Result::Best; // instant death
+            return Result::Best; // message to the sender: instant death is waiting here for you
         }
+        if ( searchEnded() )
+        {
+            continue;
+        }
+        createBranch();
         const Result next = test ( nextStep );
         switch ( checkForUpdate ( next ) )
         {
@@ -101,10 +98,12 @@ Result MiniMaxOptimizer::test ( const Step& st )
             break;
         default: // INTERRUPTED
             removeBranch();
+            undoStep();
             jumpToParentNode();
-            return Result::Best; // instant death
+            return Result::Best; // message to the sender: do not choose a worse option than that you have already found!
         }
     }
+    undoStep();
     jumpToParentNode();
     return lastFound();
 }
