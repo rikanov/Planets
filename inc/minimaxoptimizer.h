@@ -35,7 +35,7 @@ class MiniMaxOptimizer: public Board
     Result ** _stackPointer;
     int _lineIndex;
     
-    void makeBranch();
+    void createBranch();
     void removeBranch();
     void updateBranch();
 
