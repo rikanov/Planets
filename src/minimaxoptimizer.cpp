@@ -59,12 +59,7 @@ void MiniMaxOptimizer::updateBranch()
 }
 bool MiniMaxOptimizer::searchEnd()
 {
-    const int bound = * ( _stackPointer[_lineIndex] - 1 );
-    if ( bound > 0 /*winner strategy has been found before*/ )
-    {
-        _level = _lineIndex + bound;
-    }
-    return _lineIndex == _level;
+    return ++_lineIndex == _level;
 }
 MiniMaxOptimizer::UpdateResult MiniMaxOptimizer::checkForUpdate ( const Result& R )
 {
