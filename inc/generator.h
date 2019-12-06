@@ -17,7 +17,7 @@ public:
     ~Generator();
     bool next ( Step & );
     bool nextRandom ( Step& );
-    void randomize();
+    void randomize( Step & );
     void reset()
     {
 #ifndef CONTINUE_BUILD_CACHE
