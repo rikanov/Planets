@@ -133,6 +133,7 @@ Result MiniMaxOptimizer::getResult()
     Generator possibleSteps ( getCurrentCollection() );
     Step nextStep;
     possibleSteps.randomize( nextStep );
+    ret.setStep(nextStep); // choose a random step if the best step has been not found
     while ( possibleSteps.nextRandom ( nextStep ) )
     {
         if ( isWinnerStep ( nextStep ) )
