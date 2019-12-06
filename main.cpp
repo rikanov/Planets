@@ -28,6 +28,9 @@ void stopSDL()
 }
 int main()
 {
+    BasicUI testForMMOP;
+    testForMMOP.start();
+    return 0;
     std::atexit ( stopSDL );
     Engine board;
     View2D teszt ( "BOARD", 450, 630, board );

@@ -147,7 +147,7 @@ DataCache::DataCache()
             }
             std::string suffix;
             makeSuffix ( suffix, s, d );
-            readFromFile ( prefix, suffix );
+         //   readFromFile ( prefix, suffix );
         }
     log2_ ( "counter:",_counter )
 }

@@ -33,15 +33,16 @@ class MiniMaxOptimizer: public Board
     int _maximumLevel;
 
     Result ** _stackPointer;
+    Result ** _startStackPointer;
     int _lineIndex;
-    
+
     void createBranch();
     void removeBranch();
     void updateBranch();
 
     UpdateResult checkForUpdate ( const Result& );
-    
-    
+
+
     inline bool searchEnded()
     {
         return _lineIndex == _maximumLevel;
@@ -54,7 +55,7 @@ class MiniMaxOptimizer: public Board
     {
         return * ( _stackPointer[_lineIndex] );
     }
-    inline void setLineEnd(const Result& R)
+    inline void setLineEnd ( const Result& R )
     {
         * ( _stackPointer[_lineIndex] ) = R;
     }
@@ -63,17 +64,23 @@ class MiniMaxOptimizer: public Board
         return _stackPointer[_lineIndex]->swap();
     }
     Result test ( const Step& );
+    Result test_0 ();
 
 public:
     /**
      * Default constructor
      */
-    MiniMaxOptimizer ( const int& );
+    MiniMaxOptimizer ( const int& depth = 10);
     /**
      * Destructor
      */
     ~MiniMaxOptimizer();
 
+    void setBoundLevel ( const int& BL )
+    {
+        _maximumLevel = BL;
+    }
+    Result getResult();
 };
 
 #endif // MINIMAXOPTIMIZED_H

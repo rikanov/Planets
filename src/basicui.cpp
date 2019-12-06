@@ -1,7 +1,7 @@
 #include "basicui.h"
 
 BasicUI::BasicUI()
-    :Engine()
+    :MiniMaxOptimizer()
 {
 
 }
