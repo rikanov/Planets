@@ -35,7 +35,7 @@ bool Generator::nextRandom ( Step& S )
     }
 }
 
-void Generator::randomize()
+void Generator::randomize( Step& st )
 {
     if ( __permute == nullptr )
     {
@@ -59,6 +59,8 @@ void Generator::randomize()
             --shuffles;
         }
     }
+    nextRandom(st);
+    reset();
 }
 
 Generator::~Generator()
