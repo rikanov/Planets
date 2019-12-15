@@ -7,6 +7,10 @@
 #include <time.h>
 #include <fstream>
 #include <unistd.h>
+//#include <Windows.h>
+
+//#define BUILD_CACHE
+//#define CONTINUE_BUILD_CACHE
 
 #define clog(X) std::cout<<(X)<<' '<<std::flush;
 #define clog2(X,Y) std::cout<<(X)<<' '<<(Y)<<' '<<std::flush;

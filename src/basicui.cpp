@@ -76,6 +76,14 @@ void BasicUI::start()
         {
             swapPlayers();
         }
+#ifdef CONTINUE_BUILD_CACHE
+        else if ( command == 'd' )
+        {
+            uint8_t preset[10] = {0xFF};
+            for ( uint8_t index = 0; commands >> std::hex >> preset[index]; ++index ) {}
+            Generator::_preSetting = preset;
+        }
+#endif
         else if ( command  == 'x' )
         {
             exit = true;

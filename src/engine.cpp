@@ -12,6 +12,7 @@ Engine::Engine()
 Result Engine::seeker ( Step& S, Result& search_bound )
 {
     swapPlayers();
+#ifndef BUILD_CACHE
     storeStep ( S );
     ++_deepSearchLevel;
     Result ret;
@@ -20,6 +21,27 @@ Result Engine::seeker ( Step& S, Result& search_bound )
         ret= _deepSearchLevel <= _currentLevel ? test ( search_bound ) : test0();
     }
     undoStep();
+#else
+    storeStep ( S );
+    if ( ++_deepSearchLevel < _checkingLevel )
+    {
+        search_bound = -1;
+    }
+    Result ret = _deepSearchLevel <= _currentLevel ? test ( search_bound ) : test0();
+    if ( ret == 7 )
+    {
+        saveStack ( 1,ret );
+    }
+    if ( ret == -8 )
+    {
+        saveStack ( 2,ret );
+    }
+    if ( _deepSearchLevel < _checkingLevel && ret == 0 )
+    {
+        saveStack ( 0,ret );
+    }
+    undoStep();
+#endif
     --_deepSearchLevel;
     swapPlayers();
     return ret;
@@ -98,16 +120,19 @@ Result Engine::getResult()
 {
     Result result;
     Step nextStep;
+#ifndef BUILD_CACHE
     if ( blink ( nextStep, result ) )
     {
         return result;
     }
+#endif
     result = test0_();
     if ( result.won() )
     {
         return result;
     }
     Generator possibleSteps ( getCurrentCollection() );
+#ifndef BUILD_CACHE
     possibleSteps.randomize();
     const int bound = ( stepCount() < 5 && _boundLevel < 7 ) ? 7 : _boundLevel;
     for ( _currentLevel = 1; _currentLevel <= bound; _currentLevel += 1 )
@@ -130,6 +155,22 @@ Result Engine::getResult()
             break;
         }
     }
+#else
+    _currentLevel = _boundLevel;
+    Result next ( 1 ),src ( -1 );
+    possibleSteps.reset();
+    possibleSteps.next ( nextStep );
+    result = seeker ( nextStep,src );
+    result.setStep ( nextStep );
+    while ( possibleSteps.next ( nextStep ) )
+    {
+        next = seeker ( nextStep,src );
+        if ( next >> result )
+        {
+            result.setStep ( nextStep );
+        }
+    }
+#endif
     result.swap();
     return result;
 }
