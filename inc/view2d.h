@@ -23,7 +23,6 @@
 
 #include "sdl_dep.h"
 #include "engine.h"
-#include "minimaxoptimizer.h"
 
 static const int NUMBER_OF_STONES = 5;
 class View2D

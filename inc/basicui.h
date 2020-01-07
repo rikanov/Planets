@@ -2,9 +2,8 @@
 #define BASICUI_HEADER__H
 
 #include "engine.h"
-#include "minimaxoptimizer.h"
 
-class BasicUI: public MiniMaxOptimizer
+class BasicUI: public Engine
 {
 public:
     BasicUI();

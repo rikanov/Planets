@@ -176,6 +176,28 @@ bool Board::getStep ( uint8_t ID, uint8_t row, uint8_t col, Step& S ) const
     return ret;
 }
 
+void Board::initCache()
+{
+    for ( int centerID = 0, c = -1; c <= 1; ++c )
+    {
+        for ( int r = -1; r <= 1; ++r )
+        {
+            if ( c || r )
+            {
+                _centerNodes [ centerID] = &__theGrid [ ( _rows + 1 ) / 2 + r][ ( _cols + 1 ) / 2 + c];
+                int index = 0, col = ( _cols + 1 ) / 2, row = ( _rows + 1 ) / 2 ;
+                do
+                {
+                    col-=c;
+                    row -=r;
+                    _treatingNodes[centerID][index++] = &__theGrid[row][col];
+                }
+                while ( __theGrid[row][col].getStone() != Stone::WALL );
+            }
+        }
+    }
+}
+
 bool Board::isWinnerStep ( const Step & S )
 {
     return S.aim() == _WINNER_SPOT;

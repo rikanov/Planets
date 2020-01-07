@@ -18,9 +18,6 @@
  */
 #include "sstack.h"
 
-
-static const char* DAT[] = {  "meta_un_3_0.dat", "meta_win_3_0.dat", "meta_lose_3_0.dat" };
-
 StepStack::StepStack ( const int& size )
     :_stackSize ( size )
     ,__moveHistory ( nullptr )
@@ -34,23 +31,6 @@ void StepStack::resetStack()
     __moveHistory = new Step[_stackSize + 1];
     _currentMove = _lastMove = __moveHistory + 1;
     // -------------- //
-}
-
-void StepStack::saveStack ( int fileID, int iData )
-{
-    std::ofstream outfile;
-    outfile.open ( DAT [fileID], std::ios::app );
-    for ( auto p = __moveHistory + 2; p != _currentMove + 1; ++p )
-    {
-        const int q = ( int ) p->getToken();
-        if ( q < 0x10 )
-        {
-            outfile << 0;
-        }
-        outfile << std::hex << ( int ) p->getToken() << ' ';
-    }
-    outfile << '\n';
-    outfile.close();
 }
 
 void StepStack::storeStep ( Step S )
@@ -81,15 +61,7 @@ bool StepStack::isLoop() const
     return isStarted() && _currentMove->inverseOf ( _currentMove - 2 );
 }
 
-bool StepStack::fromChache ( Result& R ) const
-{
-    return _cache.getResult ( __moveHistory + 2, _currentMove + 1, R );
-}
-
 StepStack::~StepStack()
 {
-    _outfile[0].close();
-    _outfile[1].close();
-    _outfile[2].close();
     delete[] __moveHistory;
 }

@@ -242,7 +242,7 @@ void View2D::placeStone ( SDL_Event &event )
             else
             {
                 _engine.swapPlayers();
-                S = _engine.getResult().getStep();
+                S = _engine.getBestStep();
                 _engine.storeStep ( S );
                 show();
                 if ( _engine.isWinnerStep ( S ) )

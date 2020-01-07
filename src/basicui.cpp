@@ -1,7 +1,7 @@
 #include "basicui.h"
 
 BasicUI::BasicUI()
-    :MiniMaxOptimizer()
+    :Engine()
 {
 
 }
@@ -56,7 +56,7 @@ void BasicUI::start()
         }
         else if ( command == 'l' )
         {
-            int l = 7;
+            int l = 12;
             commands >> l;
             setBoundLevel ( l );
         }
@@ -91,7 +91,7 @@ void BasicUI::start()
         else if ( command  == 'g' )
         {
             swapPlayers();
-            Step st = getResult().getStep();
+            Step st = getBestStep();
             log_ ( st.whatIs() )
             storeStep ( st );
             CLR();
@@ -139,11 +139,12 @@ void BasicUI::autoplay ( const int& L1, const int& L2 )
     {
         setBoundLevel ( isPlayerTurn() ? L1 : L2 );
         Step st;
-        st = getResult().getStep();
+        st = getBestStep();
         storeStep ( st );
         CLR();
         show();
         swapPlayers();
+        clog2 ( L1, L2 )
     }
     log3_ ( "ai levels: ", L1, L2 )
     log3_ ( !isPlayerTurn() ? "Player 1" : "Player 2","win.", stepCount() )

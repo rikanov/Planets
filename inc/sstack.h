@@ -2,15 +2,11 @@
 #define SSTACK_HEADER__H
 
 #include "stone.h"
-#include "datacache.h"
 
 class StepStack
 {
 protected:
-    DataCache _cache;
     const int _stackSize;
-    std::ofstream _outfile[3];
-    // Store steps for UI (undo, redo)
     Step * __moveHistory,*_currentMove,*_lastMove;
 
 public:
@@ -33,7 +29,7 @@ public:
     {
         return index < 0 ? * ( _currentMove + index + 1 ) : __moveHistory[index];
     }
-    bool fromChache ( Result& R ) const;
+    bool fromChache ( int& R ) const;
     void resetStack();
     void storeStep ( Step S );
     void undoStep();

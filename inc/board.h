@@ -14,8 +14,12 @@ private:
     Collection * _collectionOfProgram;
     Collection * _currentOpponent;
 
+    Node * _centerNodes[8];
+    Node ** _treatingNodes[8];
+
     const int _rows;
     const int _cols;
+    void initCache();
 public:
     const Collection * getProgramCollection() const;
     const Collection * getPlayerCollection() const;
@@ -30,6 +34,7 @@ public:
     bool getStep ( uint8_t, uint8_t, Step& ) const;
     bool getStep ( uint8_t, uint8_t, uint8_t, uint8_t, Step& ) const;
     bool getStep ( uint8_t, uint8_t, uint8_t, Step& ) const;
+    bool isWinnerStep() const;
     bool isWinnerStep ( const Step& );
     void swapPlayers();
     bool isFinished() const;
