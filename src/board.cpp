@@ -213,7 +213,7 @@ bool Board::isWinnerStep() const
         }
         const Node ** pNode = _treatingNodes[centerID];
         for(; (*pNode)->isEmpty(); ++pNode);
-        if(pNode->getStone()->getTeam() == _currentOpponent)
+        if( (*pNode)->getStone()->getTeam() == _currentOpponent)
         {
             return true;
         }
