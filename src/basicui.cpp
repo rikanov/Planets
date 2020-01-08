@@ -92,7 +92,6 @@ void BasicUI::start()
         {
             swapPlayers();
             Step st = getBestStep();
-            log_ ( st.whatIs() )
             storeStep ( st );
             CLR();
             show();
@@ -128,7 +127,8 @@ void BasicUI::makeStep ( uint8_t P, uint8_t D )
 {
     Step st;
     getStep ( P, D, st );
-    storeStep ( st );
+    if(st.isValid())
+        storeStep ( st );
 }
 
 void BasicUI::autoplay ( const int& L1, const int& L2 )
@@ -144,7 +144,6 @@ void BasicUI::autoplay ( const int& L1, const int& L2 )
         CLR();
         show();
         swapPlayers();
-        clog2 ( L1, L2 )
     }
     log3_ ( "ai levels: ", L1, L2 )
     log3_ ( !isPlayerTurn() ? "Player 1" : "Player 2","win.", stepCount() )

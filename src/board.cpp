@@ -203,7 +203,7 @@ bool Board::getStep ( uint8_t ID, uint8_t row, uint8_t col, Step& S ) const
     return ret;
 }
 
-bool Board::isWinnerStep() const
+Node * Board::isWinnerStep() 
 {
     for(int centerID = 0; centerID < 8; ++centerID)
     {
@@ -211,14 +211,14 @@ bool Board::isWinnerStep() const
         {
             continue;
         }
-        const Node ** pNode = _treatingNodes[centerID];
+        Node ** pNode = _treatingNodes[centerID];
         for(; (*pNode)->isEmpty(); ++pNode);
         if( (*pNode)->getStone()->getTeam() == _currentOpponent)
         {
-            return true;
+            return *pNode;
         }
     }
-    return false;
+    return nullptr;
 }
 
 bool Board::isWinnerStep ( const Step & S )

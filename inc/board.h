@@ -6,6 +6,7 @@
 
 class Board: public StepStack
 {
+protected:
     const Node* _WINNER_SPOT;
 private:
     // Board grid [rows+2][columns+2]
@@ -34,7 +35,7 @@ public:
     bool getStep ( uint8_t, uint8_t, Step& ) const;
     bool getStep ( uint8_t, uint8_t, uint8_t, uint8_t, Step& ) const;
     bool getStep ( uint8_t, uint8_t, uint8_t, Step& ) const;
-    bool isWinnerStep() const;
+    Node * isWinnerStep() ;
     bool isWinnerStep ( const Step& );
     void swapPlayers();
     bool isFinished() const;

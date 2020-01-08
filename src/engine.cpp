@@ -34,7 +34,7 @@ int Engine::myTurn ( const int& no_more )
     // check node
     if ( isWinnerStep ( ) )
     {
-        return 1 + _boundLevel - _deepSearchLevel;
+        return 1 + _boundLevel - _deepSearchLevel; 
     }
     if ( _deepSearchLevel >= _currentMaxLevel ) // it's too deep now. Abort searching
     {
@@ -97,6 +97,11 @@ int Engine::yourTurn ( const int& no_less )
 
 Step Engine::getBestStep()
 {
+    Node * pWinnerStep = isWinnerStep();
+    if(pWinnerStep)
+    {
+        return Step(pWinnerStep->getStone(), _WINNER_SPOT);
+    }
     _currentMaxLevel = _boundLevel;
     int reward = - _currentMaxLevel -2; // it will be better
     Step result, nextStep;
@@ -104,17 +109,14 @@ Step Engine::getBestStep()
     possibleSteps.randomize();
     while ( possibleSteps.nextRandom ( nextStep ) )
     {
-        if ( isWinnerStep ( nextStep ) )
-        {
-            result = nextStep;
-            break;
-        }
         storeStep ( nextStep );
+        swapPlayers();
         const int rewardOfTheNextStep = yourTurn ( reward );
+        swapPlayers();
         undoStep();
-        clog3(nextStep.whatIs(), ':', rewardOfTheNextStep )
         if ( rewardOfTheNextStep > reward )
         {
+            clog('.')
             reward = rewardOfTheNextStep;
             result = nextStep;
             if ( reward > 0 )
@@ -126,4 +128,5 @@ Step Engine::getBestStep()
     }
     return result;
 }
+
 
