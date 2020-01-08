@@ -31,79 +31,67 @@ Engine::Engine()
 
 int Engine::myTurn ( const int& no_more )
 {
-    ++_deepSearchLevel;
+    // check node
+    if ( isWinnerStep ( ) )
+    {
+        return 1 + _boundLevel - _deepSearchLevel;
+    }
+    if ( _deepSearchLevel >= _currentMaxLevel ) // it's too deep now. Abort searching
+    {
+        return 0; // unevaluated branch
+    }
+    // check branch
     int reward = _deepSearchLevel - _boundLevel -1; // the worst option: we had already lost
-    if ( _deepSearchLevel == _currentMaxLevel ) // it's too deep now. Abort searching
+    Generator possibleSteps ( getCurrentCollection() );
+    Step nextStep;
+    const int savedCurrentMaxLevel = _currentMaxLevel;
+    while ( possibleSteps.next ( nextStep ) && reward < no_more )
     {
-        reward = 0; // unevaluated branch
-    }
-    else // check the branch of steps, we have chances
-    {
+        storeStep ( nextStep );
         swapPlayers();
-        if ( isWinnerStep ( ) )
+        ++_deepSearchLevel;
+        if ( checkMaxReward ( reward, yourTurn ( reward ) ) && reward > 0 )
         {
-            //reward = _deepSearchLevel - _boundLevel -1;
-            reward = 1 + _boundLevel - _deepSearchLevel;
+            _currentMaxLevel = _boundLevel - reward;
         }
-        else
-        {
-            Generator possibleSteps ( getCurrentCollection() );
-            Step nextStep;
-            const int savedCurrentMaxLevel = _currentMaxLevel;
-            while ( possibleSteps.next ( nextStep ) && reward < no_more )
-            {
-                storeStep ( nextStep );
-                if ( checkMaxReward ( reward, yourTurn ( reward ) ) && reward > 0 )
-                {
-                    _currentMaxLevel = _boundLevel - reward;
-                    /*  clog2('M',_currentMaxLevel)*/
-                }
-                undoStep();
-            }
-            _currentMaxLevel = savedCurrentMaxLevel;
-        }
+        --_deepSearchLevel;
         swapPlayers();
+        undoStep();
     }
-    --_deepSearchLevel;
+    _currentMaxLevel = savedCurrentMaxLevel;
     return reward;
 }
 
 int Engine::yourTurn ( const int& no_less )
 {
-    ++_deepSearchLevel;
+    // check node
+    if ( isWinnerStep ( ) )
+    {
+        return _deepSearchLevel - _boundLevel -1;
+    }
+    if ( _deepSearchLevel >= _currentMaxLevel ) // it's too deep now. Abort searching
+    {
+        return 0; // unevaluated branch
+    }
+    // check branch
     int reward = 1 + _boundLevel - _deepSearchLevel; // the worst option: we had already lost
-    if ( _deepSearchLevel == _currentMaxLevel ) // it's too deep now. Abort searching
+    Generator possibleSteps ( getCurrentCollection() );
+    Step nextStep;
+    const int savedCurrentMaxLevel = _currentMaxLevel;
+    while ( possibleSteps.next ( nextStep ) && reward > no_less )
     {
-        reward = 0; // unevaluated branch
-    }
-    else
-    {
+        storeStep ( nextStep );
         swapPlayers();
-        if ( isWinnerStep ( ) )
+        ++_deepSearchLevel;
+        if ( checkMinReward ( reward, myTurn ( reward ) ) && reward < 0 )
         {
-            reward = _deepSearchLevel - _boundLevel -1;
-            //reward = 1 + _boundLevel - _deepSearchLevel;
+            _currentMaxLevel = _boundLevel + reward;
         }
-        else // check the branch of steps, we have chances
-        {
-            Generator possibleSteps ( getCurrentCollection() );
-            Step nextStep;
-            const int savedCurrentMaxLevel = _currentMaxLevel;
-            while ( possibleSteps.next ( nextStep ) && reward > no_less )
-            {
-                storeStep ( nextStep );
-                if ( checkMinReward ( reward, myTurn ( reward ) ) && reward < 0 )
-                {
-                    _currentMaxLevel = _boundLevel + reward;
-                    /* clog2('Y',_currentMaxLevel)*/
-                }
-                undoStep();
-            }
-            _currentMaxLevel = savedCurrentMaxLevel;
-        }
+        --_deepSearchLevel;
         swapPlayers();
+        undoStep();
     }
-    --_deepSearchLevel;
+    _currentMaxLevel = savedCurrentMaxLevel;
     return reward;
 }
 
