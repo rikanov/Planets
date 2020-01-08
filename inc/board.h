@@ -15,7 +15,7 @@ private:
     Collection * _currentOpponent;
 
     Node * _centerNodes[8];
-    Node ** _treatingNodes[8];
+    Node * _treatingNodes[8][5];
 
     const int _rows;
     const int _cols;

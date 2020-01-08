@@ -40,25 +40,28 @@ int Engine::myTurn ( const int& no_more )
     else // check the branch of steps, we have chances
     {
         swapPlayers();
-        Generator possibleSteps ( getCurrentCollection() );
-        Step nextStep;
-        const int savedCurrentMaxLevel = _currentMaxLevel;
-        while ( possibleSteps.next ( nextStep ) && reward < no_more )
+        if ( isWinnerStep ( ) )
         {
-            if ( isWinnerStep ( nextStep ) )
-            {
-                reward = 1 + _boundLevel - _deepSearchLevel;
-                break;
-            }
-            storeStep ( nextStep );
-            if ( checkMaxReward ( reward, yourTurn ( reward ) ) && reward > 0 )
-            {
-                _currentMaxLevel = _boundLevel - reward;
-                /*  clog2('M',_currentMaxLevel)*/
-            }
-            undoStep();
+            //reward = _deepSearchLevel - _boundLevel -1;
+            reward = 1 + _boundLevel - _deepSearchLevel;
         }
-        _currentMaxLevel = savedCurrentMaxLevel;
+        else
+        {
+            Generator possibleSteps ( getCurrentCollection() );
+            Step nextStep;
+            const int savedCurrentMaxLevel = _currentMaxLevel;
+            while ( possibleSteps.next ( nextStep ) && reward < no_more )
+            {
+                storeStep ( nextStep );
+                if ( checkMaxReward ( reward, yourTurn ( reward ) ) && reward > 0 )
+                {
+                    _currentMaxLevel = _boundLevel - reward;
+                    /*  clog2('M',_currentMaxLevel)*/
+                }
+                undoStep();
+            }
+            _currentMaxLevel = savedCurrentMaxLevel;
+        }
         swapPlayers();
     }
     --_deepSearchLevel;
@@ -73,28 +76,31 @@ int Engine::yourTurn ( const int& no_less )
     {
         reward = 0; // unevaluated branch
     }
-    else // check the branch of steps, we have chances
+    else
     {
         swapPlayers();
-        Generator possibleSteps ( getCurrentCollection() );
-        Step nextStep;
-        const int savedCurrentMaxLevel = _currentMaxLevel;
-        while ( possibleSteps.next ( nextStep ) && reward > no_less )
+        if ( isWinnerStep ( ) )
         {
-            if ( isWinnerStep ( nextStep ) )
-            {
-                reward = _deepSearchLevel - _boundLevel -1;
-                break;
-            }
-            storeStep ( nextStep );
-            if ( checkMinReward ( reward, myTurn ( reward ) ) && reward < 0 )
-            {
-                _currentMaxLevel = _boundLevel + reward;
-                /* clog2('Y',_currentMaxLevel)*/
-            }
-            undoStep();
+            reward = _deepSearchLevel - _boundLevel -1;
+            //reward = 1 + _boundLevel - _deepSearchLevel;
         }
-        _currentMaxLevel = savedCurrentMaxLevel;
+        else // check the branch of steps, we have chances
+        {
+            Generator possibleSteps ( getCurrentCollection() );
+            Step nextStep;
+            const int savedCurrentMaxLevel = _currentMaxLevel;
+            while ( possibleSteps.next ( nextStep ) && reward > no_less )
+            {
+                storeStep ( nextStep );
+                if ( checkMinReward ( reward, myTurn ( reward ) ) && reward < 0 )
+                {
+                    _currentMaxLevel = _boundLevel + reward;
+                    /* clog2('Y',_currentMaxLevel)*/
+                }
+                undoStep();
+            }
+            _currentMaxLevel = savedCurrentMaxLevel;
+        }
         swapPlayers();
     }
     --_deepSearchLevel;
@@ -118,7 +124,7 @@ Step Engine::getBestStep()
         storeStep ( nextStep );
         const int rewardOfTheNextStep = yourTurn ( reward );
         undoStep();
-        clog ( rewardOfTheNextStep )
+        clog3(nextStep.whatIs(), ':', rewardOfTheNextStep )
         if ( rewardOfTheNextStep > reward )
         {
             reward = rewardOfTheNextStep;

@@ -61,10 +61,37 @@ Board::Board ( const int& S )
             }
         }
     }
+    // set cache structures
+    initCache();
+    // ---------------- //
     // set the middle field of the board as the place of victory
     _WINNER_SPOT = &__theGrid[ ( _rows + 1 ) / 2][ ( _cols + 1 ) / 2];
     // --------------- //
 }
+
+void Board::initCache()
+{
+    for ( int centerID = 0, c = -1; c <= 1; ++c )
+    {
+        for ( int r = -1; r <= 1; ++r )
+        {
+            if ( c || r )
+            {
+                int index = 0, col = ( _cols + 1 ) / 2, row = ( _rows + 1 ) / 2 ;
+                _centerNodes [ centerID] = &__theGrid [ row + r][ col + c];
+                do
+                {
+                    col-=c;
+                    row -=r;
+                    _treatingNodes[centerID][index++] = &__theGrid[row][col];
+                }
+                while ( __theGrid[row][col].getStone() != Stone::WALL );
+                ++centerID;
+            }
+        }
+    }
+}
+
 void Board::reset()
 {
     for ( uint8_t row = 1; row < _rows + 1; ++row )
@@ -176,26 +203,22 @@ bool Board::getStep ( uint8_t ID, uint8_t row, uint8_t col, Step& S ) const
     return ret;
 }
 
-void Board::initCache()
+bool Board::isWinnerStep() const
 {
-    for ( int centerID = 0, c = -1; c <= 1; ++c )
+    for(int centerID = 0; centerID < 8; ++centerID)
     {
-        for ( int r = -1; r <= 1; ++r )
+        if(_centerNodes[centerID]->isEmpty())
         {
-            if ( c || r )
-            {
-                _centerNodes [ centerID] = &__theGrid [ ( _rows + 1 ) / 2 + r][ ( _cols + 1 ) / 2 + c];
-                int index = 0, col = ( _cols + 1 ) / 2, row = ( _rows + 1 ) / 2 ;
-                do
-                {
-                    col-=c;
-                    row -=r;
-                    _treatingNodes[centerID][index++] = &__theGrid[row][col];
-                }
-                while ( __theGrid[row][col].getStone() != Stone::WALL );
-            }
+            continue;
+        }
+        const Node * pNode = *_treatingNodes[centerID];
+        for(; pNode->isEmpty(); ++pNode);
+        if(pNode->getStone()->getTeam() == _currentOpponent)
+        {
+            return true;
         }
     }
+    return false;
 }
 
 bool Board::isWinnerStep ( const Step & S )
