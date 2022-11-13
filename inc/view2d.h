@@ -68,7 +68,7 @@ class View2D
 public:
     View2D ( const char* name,const int w, const int h, Engine& );
     ~View2D();
-    void select();
+    void play();
     void reset();
 };
 

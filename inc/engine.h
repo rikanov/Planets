@@ -19,7 +19,7 @@ private:
 protected:
 public:
     Engine();
-    void setBoundLevel ( const int& BL )
+    void setDifficulty ( const int& BL )
     {
         _boundLevel = BL;
     }

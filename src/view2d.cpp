@@ -43,6 +43,7 @@ View2D::View2D ( const char* name,const int w, const int h, Engine& B )
         init();
     }
     createWindow();
+    show();
 }
 
 void View2D::init()
@@ -78,25 +79,25 @@ void View2D::createWindow()
 void View2D::loadTextureImage()
 {
     int w,h;
-    _boardBackground = IMG_LoadTexture ( _render, "graphics/background.png" );
+    _boardBackground = IMG_LoadTexture ( _render, "../graphics/background.png" );
     if ( _boardBackground == nullptr )
     {
         std::cerr << "IMG_LoadTexture Error: "<< SDL_GetError() << std::endl;
         exit ( 5 );
     }
-    _boardTexture  = IMG_LoadTexture ( _render, "graphics/board.png" );
+    _boardTexture  = IMG_LoadTexture ( _render, "../graphics/board.png" );
     if ( _boardTexture == nullptr )
     {
         std::cerr << "IMG_LoadTexture Error: "<< SDL_GetError() << std::endl;
         exit ( 5 );
     }
-    _stone[0]  = IMG_LoadTexture ( _render, "graphics/stone0.png" );
+    _stone[0]  = IMG_LoadTexture ( _render, "../graphics/stone0.png" );
     if ( _boardTexture == nullptr )
     {
         std::cerr << "IMG_LoadTexture Error: "<< SDL_GetError() << std::endl;
         exit ( 5 );
     }
-    _stone[1]  = IMG_LoadTexture ( _render, "graphics/stone1.png" );
+    _stone[1]  = IMG_LoadTexture ( _render, "../graphics/stone1.png" );
     if ( _boardTexture == nullptr )
     {
         std::cerr << "IMG_LoadTexture Error: "<< SDL_GetError() << std::endl;
@@ -214,7 +215,6 @@ void View2D::reset()
 
 void View2D::placeStone ( SDL_Event &event )
 {
-    SDL_PollEvent ( &event );
     int mx, my;
     SDL_GetMouseState ( &mx, &my );
     if ( pickUp ( mx, my ) && _selected_team == 1 )
@@ -225,10 +225,10 @@ void View2D::placeStone ( SDL_Event &event )
             show();
             SDL_PollEvent ( &event );
         }
-        while ( event.button.button == SDL_PRESSED );
+        while ( event.type != SDL_MOUSEBUTTONUP );
         SDL_GetMouseState ( &mx, &my );
-        int col = ( mx - OFFSET_X ) / STEP_X + 1;
-        int row = ( my - OFFSET_Y ) / STEP_Y + 1;
+        const int col = ( mx - OFFSET_X ) / STEP_X + 1;
+        const int row = ( my - OFFSET_Y ) / STEP_Y + 1;
         Step S;
         if ( _engine.getStep ( _selected_ID, 8 - row /*invert*/, col, S ) )
         {
@@ -263,7 +263,7 @@ void View2D::placeStone ( SDL_Event &event )
     }
 }
 
-void View2D::select()
+void View2D::play()
 {
     SDL_Event event;
     show();
@@ -290,7 +290,11 @@ void View2D::select()
         }
         if ( event.type == SDL_MOUSEBUTTONDOWN )
         {
+            std::cout<<(event.button.button == SDL_PRESSED ) <<std::endl;
+            std::cout<<"mouseON"<<std::endl;
             placeStone ( event );
+            std::cout<<(event.button.button == SDL_PRESSED ) <<std::endl;
+            std::cout<<"mouseOFF"<<std::endl;
         }
     }
     while ( true );

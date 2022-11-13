@@ -28,15 +28,10 @@ void stopSDL()
 }
 int main()
 {
-    BasicUI testForMMOP;
-    testForMMOP.start();
-    return 0;
     std::atexit ( stopSDL );
     Engine board;
-    View2D teszt ( "BOARD", 450, 630, board );
-    teszt.select();
-    return 0;//*/
-    BasicUI ui;
-    ui.start();
+    board.setDifficulty(6);
+    View2D UItest ( "BOARD", 450, 630, board );
+    UItest.play();
     return 0;
 }

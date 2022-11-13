@@ -58,7 +58,7 @@ void BasicUI::start()
         {
             int l = 12;
             commands >> l;
-            setBoundLevel ( l );
+            setDifficulty ( l );
         }
         else if ( command  == 'n' )
         {
@@ -137,7 +137,7 @@ void BasicUI::autoplay ( const int& L1, const int& L2 )
     show();
     while ( !isFinished() )
     {
-        setBoundLevel ( isPlayerTurn() ? L1 : L2 );
+        setDifficulty ( isPlayerTurn() ? L1 : L2 );
         Step st;
         st = getBestStep();
         storeStep ( st );
