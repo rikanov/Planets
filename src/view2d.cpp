@@ -79,25 +79,25 @@ void View2D::createWindow()
 void View2D::loadTextureImage()
 {
     int w,h;
-    _boardBackground = IMG_LoadTexture ( _render, "../graphics/background.png" );
+    _boardBackground = IMG_LoadTexture ( _render, "graphics/background.png" );
     if ( _boardBackground == nullptr )
     {
         std::cerr << "IMG_LoadTexture Error: "<< SDL_GetError() << std::endl;
         exit ( 5 );
     }
-    _boardTexture  = IMG_LoadTexture ( _render, "../graphics/board.png" );
+    _boardTexture  = IMG_LoadTexture ( _render, "graphics/board.png" );
     if ( _boardTexture == nullptr )
     {
         std::cerr << "IMG_LoadTexture Error: "<< SDL_GetError() << std::endl;
         exit ( 5 );
     }
-    _stone[0]  = IMG_LoadTexture ( _render, "../graphics/stone0.png" );
+    _stone[0]  = IMG_LoadTexture ( _render, "graphics/stone0.png" );
     if ( _boardTexture == nullptr )
     {
         std::cerr << "IMG_LoadTexture Error: "<< SDL_GetError() << std::endl;
         exit ( 5 );
     }
-    _stone[1]  = IMG_LoadTexture ( _render, "../graphics/stone1.png" );
+    _stone[1]  = IMG_LoadTexture ( _render, "graphics/stone1.png" );
     if ( _boardTexture == nullptr )
     {
         std::cerr << "IMG_LoadTexture Error: "<< SDL_GetError() << std::endl;
@@ -186,10 +186,6 @@ bool View2D::pickUp ( const int& coX, const int& coY )
     return result;
 }
 
-void View2D::glidingEffect ( const Step& step )
-{
-}
-
 void View2D::show ( ) const
 {
     SDL_RenderClear ( _render );
@@ -265,15 +261,10 @@ void View2D::placeStone ( SDL_Event &event )
 
 void View2D::play()
 {
-    SDL_Event event;
-    show();
-    do
+    for ( SDL_Event event; event.type != SDL_QUIT; )
     {
+        show();
         SDL_WaitEvent ( &event );
-        if ( event.type == SDL_QUIT )
-        {
-            return;
-        }
         if ( event.type == SDL_KEYDOWN )
         {
             switch ( event.key.keysym.sym ) // ToDo
@@ -290,15 +281,11 @@ void View2D::play()
         }
         if ( event.type == SDL_MOUSEBUTTONDOWN )
         {
-            std::cout<<(event.button.button == SDL_PRESSED ) <<std::endl;
-            std::cout<<"mouseON"<<std::endl;
             placeStone ( event );
-            std::cout<<(event.button.button == SDL_PRESSED ) <<std::endl;
-            std::cout<<"mouseOFF"<<std::endl;
         }
     }
-    while ( true );
 }
+
 View2D::~View2D()
 {
     SDL_DestroyTexture ( _boardBackground );
